@@ -206,8 +206,12 @@ export default function UserDashboard() {
                                 justifyContent: 'space-between',
                                 alignItems: 'center',
                                 flexWrap: 'wrap',
-                                gap: '12px'
-                            }}>
+                                gap: '12px',
+                                transition: 'all 0.2s ease',
+                                cursor: 'pointer'
+                            }} 
+                            onMouseEnter={(e) => e.currentTarget.style.borderColor = 'var(--primary)'} 
+                            onMouseLeave={(e) => e.currentTarget.style.borderColor = '#e2e8f0'}>
                                 <div>
                                     <h4 style={{ margin: '0 0 4px 0', fontSize: '1rem', fontWeight: 600, color: 'var(--text-color)' }}>
                                         {link.title || 'Tanpa Judul'}
@@ -221,10 +225,19 @@ export default function UserDashboard() {
                                         padding: '8px 12px',
                                         borderRadius: '8px',
                                         border: '1px solid var(--primary)',
-                                        background: 'transparent',
-                                        color: 'var(--primary)',
+                                        background: 'var(--primary)',
+                                        color: 'white',
                                         fontSize: '0.85rem',
-                                        cursor: 'pointer'
+                                        cursor: 'pointer',
+                                        transition: 'all 0.2s ease'
+                                    }} 
+                                    onMouseEnter={(e) => {
+                                        e.currentTarget.style.background = 'transparent';
+                                        e.currentTarget.style.color = 'var(--primary)';
+                                    }} 
+                                    onMouseLeave={(e) => {
+                                        e.currentTarget.style.background = 'var(--primary)';
+                                        e.currentTarget.style.color = 'white';
                                     }}>
                                         Salin
                                     </button>
