@@ -96,13 +96,12 @@ export default function DashboardLinks() {
 
     return (
         <div className="dash-card">
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
-                <h2 style={{ fontSize: '1.2rem' }}>Katalog Link Kamu</h2>
+            <div className="flex justify-between items-center mb-6">
+                <h2 className="text-xl font-semibold">Katalog Link Kamu</h2>
                 {!isAdding && (
                     <button
                         onClick={() => setIsAdding(true)}
-                        className="lp-btn-small"
-                        style={{ border: 'none', cursor: 'pointer' }}
+                        className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors cursor-pointer"
                     >
                         + Tambah Link
                     </button>
@@ -110,15 +109,15 @@ export default function DashboardLinks() {
             </div>
 
             {isAdding && (
-                <form onSubmit={handleAddLink} style={{ background: '#f8fafc', padding: '20px', borderRadius: '12px', marginBottom: '24px' }}>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                <form onSubmit={handleAddLink} className="dashboard-form">
+                    <div className="flex flex-col gap-3">
                         <input
                             type="text"
                             placeholder="Judul (Misal: Sepatu Shopee Viral)"
                             value={newTitle}
                             onChange={(e) => setNewTitle(e.target.value)}
                             required
-                            style={{ padding: '12px', borderRadius: '8px', border: '1px solid #ddd', fontSize: '1rem' }}
+                            className="p-3 rounded-lg border border-gray-200 text-base"
                         />
                         <input
                             type="url"
@@ -126,38 +125,39 @@ export default function DashboardLinks() {
                             value={newUrl}
                             onChange={(e) => setNewUrl(e.target.value)}
                             required
-                            style={{ padding: '12px', borderRadius: '8px', border: '1px solid #ddd', fontSize: '1rem' }}
+                            className="p-3 rounded-lg border border-gray-200 text-base"
                         />
-                        <div style={{ display: 'flex', gap: '10px' }}>
-                            <button type="submit" className="lp-btn-small" style={{ cursor: 'pointer', border: 'none' }}>Simpan Link</button>
-                            <button type="button" onClick={() => setIsAdding(false)} style={{ padding: '8px 16px', borderRadius: '50px', border: '1px solid #ddd', cursor: 'pointer', background: 'white' }}>Batal</button>
+                        <div className="flex gap-2">
+                            <button type="submit" className="dashboard-btn dashboard-btn-primary">Simpan Link</button>
+                            <button type="button" onClick={() => setIsAdding(false)} className="dashboard-btn bg-gray-100 hover:bg-gray-200">Batal</button>
                         </div>
                     </div>
                 </form>
             )}
 
             {loading ? (
-                <p style={{ color: 'var(--text-muted)' }}>Memuat link...</p>
+                <p className="text-gray-500">Memuat link...</p>
             ) : links.length === 0 ? (
-                <p style={{ color: 'var(--text-muted)' }}>Belum ada link yang ditambahkan. Yuk buat link affiliate pertamamu!</p>
+                <p className="text-gray-500">Belum ada link yang ditambahkan. Yuk buat link affiliate pertamamu!</p>
             ) : (
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                <div className="flex flex-col gap-4">
                     {links.map((link) => (
-                        <div key={link.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px', border: '1px solid #e2e8f0', borderRadius: '12px', background: link.is_active ? 'white' : '#f8fafc' }}>
-                            <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', opacity: link.is_active ? 1 : 0.5 }}>
-                                <span style={{ fontWeight: '700', fontSize: '1.1rem' }}>{link.title}</span>
-                                <a href={link.url} target="_blank" rel="noreferrer" style={{ color: 'var(--primary)', fontSize: '0.9rem', textDecoration: 'none' }}>{link.url}</a>
+                        <div key={link.id} className="flex flex-col md:flex-row justify-between items-start md:items-center p-4 border border-gray-200 rounded-lg bg-white gap-4 md:gap-0">
+                            <div className="flex flex-col gap-1 opacity-90">
+                                <span className="font-bold text-lg">{link.title}</span>
+                                <a href={link.url} target="_blank" rel="noreferrer" className="text-primary text-sm hover:underline">{link.url}</a>
                             </div>
-                            <div style={{ display: 'flex', gap: '8px' }}>
+                            <div className="flex gap-2 w-full md:w-auto justify-end">
                                 <button
                                     onClick={() => toggleStatus(link.id, link.is_active)}
-                                    style={{ padding: '6px 12px', borderRadius: '8px', border: 'none', cursor: 'pointer', background: link.is_active ? '#fee2e2' : '#d1fae5', color: link.is_active ? '#991b1b' : '#065f46', fontSize: '0.85rem' }}
+                                    className="px-3 py-1.5 rounded-lg text-sm cursor-pointer"
+                                    style={{ background: link.is_active ? '#fee2e2' : '#d1fae5', color: link.is_active ? '#991b1b' : '#065f46', border: 'none' }}
                                 >
                                     {link.is_active ? 'Nonaktifkan' : 'Aktifkan'}
                                 </button>
                                 <button
                                     onClick={() => handleDelete(link.id)}
-                                    style={{ padding: '6px 12px', borderRadius: '8px', border: '1px solid #e2e8f0', cursor: 'pointer', background: 'white', color: '#64748b', fontSize: '0.85rem' }}
+                                    className="px-3 py-1.5 rounded-lg text-sm cursor-pointer border border-gray-200 bg-white text-gray-600"
                                 >
                                     Hapus
                                 </button>

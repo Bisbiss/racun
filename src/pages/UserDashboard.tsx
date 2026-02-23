@@ -106,7 +106,8 @@ export default function UserDashboard() {
                 <p style={{ color: 'var(--text-muted)' }}>Ini adalah pantauan aktivitas link tokomu selama 7 hari terakhir.</p>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '24px' }}>
+            {/* Stats Grid */}
+            <div className="stats-grid">
                 <div style={{
                     background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
                     borderRadius: '20px',
@@ -115,7 +116,7 @@ export default function UserDashboard() {
                     boxShadow: '0 10px 15px -3px rgba(16, 185, 129, 0.3)',
                     position: 'relative',
                     overflow: 'hidden'
-                }} className="dash-card">
+                }}>
                     <svg style={{ position: 'absolute', right: '-10px', bottom: '-10px', opacity: 0.2 }} width="100" height="100" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                         <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
                     </svg>
@@ -150,7 +151,8 @@ export default function UserDashboard() {
                 </div>
             </div>
 
-            <div className="dash-card" style={{ marginTop: '32px' }}>
+            {/* Chart Card */}
+            <div className="dash-card">
                 <h3 style={{ color: 'var(--text-color)', fontSize: '1.2rem', marginBottom: '32px', fontWeight: 600 }}>Statistik Pengunjung (7 Hari)</h3>
 
                 <div style={{ width: '100%' }}>
