@@ -16,9 +16,14 @@ export default function DashboardLayout() {
 
             const { data } = await supabase
                 .from('profiles')
-                .select('username')
+                .select('username, role')
                 .eq('id', session.user.id)
                 .single();
+
+            if (data?.role === 'admin') {
+                navigate('/admin');
+                return;
+            }
 
             if (data?.username) {
                 setUsername(data.username);
