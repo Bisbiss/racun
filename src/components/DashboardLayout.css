@@ -129,3 +129,48 @@
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
   border: 1px solid #e2e8f0;
 }
+
+/* Mobile responsive sidebar */
+@media (max-width: 768px) {
+  .dashboard-sidebar {
+    position: fixed;
+    left: -250px;
+    z-index: 100;
+    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    transition: left 0.3s ease;
+  }
+  
+  .dashboard-sidebar.open {
+    left: 0;
+  }
+  
+  .dashboard-main {
+    padding: 0 16px !important;
+    width: 100%;
+  }
+  
+  .sidebar-toggle-btn {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: var(--primary);
+    color: white;
+    border: none;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    font-size: 1.5rem;
+    z-index: 99;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+}
+
+@media (min-width: 769px) {
+  .sidebar-toggle-btn {
+    display: none;
+  }
+}
