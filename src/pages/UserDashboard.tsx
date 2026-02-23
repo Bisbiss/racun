@@ -98,7 +98,7 @@ export default function UserDashboard() {
     };
 
     return (
-        <div>
+        <div className="dashboard-container">
             <div style={{ marginBottom: '32px' }}>
                 <h2 style={{ fontSize: '1.5rem', fontWeight: 600, color: 'var(--text-color)', marginBottom: '4px' }}>
                     {getGreeting()}, {userName}! 👋
@@ -115,7 +115,7 @@ export default function UserDashboard() {
                     boxShadow: '0 10px 15px -3px rgba(16, 185, 129, 0.3)',
                     position: 'relative',
                     overflow: 'hidden'
-                }}>
+                }} className="dash-card">
                     <svg style={{ position: 'absolute', right: '-10px', bottom: '-10px', opacity: 0.2 }} width="100" height="100" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                         <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
                     </svg>
@@ -150,11 +150,11 @@ export default function UserDashboard() {
                 </div>
             </div>
 
-            <div className="dash-card" style={{ marginTop: '32px', padding: '32px' }}>
+            <div className="dash-card" style={{ marginTop: '32px' }}>
                 <h3 style={{ color: 'var(--text-color)', fontSize: '1.2rem', marginBottom: '32px', fontWeight: 600 }}>Statistik Pengunjung (7 Hari)</h3>
 
-                <div style={{ width: '100%', height: 350 }}>
-                    <ResponsiveContainer width="100%" height="100%">
+                <div style={{ width: '100%' }}>
+                    <ResponsiveContainer width="100%" height={350}>
                         <AreaChart data={chartData} margin={{ top: 10, right: 30, left: -20, bottom: 0 }}>
                             <defs>
                                 <linearGradient id="colorClicks" x1="0" y1="0" x2="0" y2="1">

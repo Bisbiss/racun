@@ -51,9 +51,9 @@ export default function AdminDashboard() {
     }, []);
 
     return (
-        <div>
+        <div className="dashboard-container">
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '24px' }}>
-                <div style={{ background: 'linear-gradient(135deg, #ef4444 0%, #b91c1c 100%)', borderRadius: '20px', padding: '24px', color: 'white', position: 'relative', overflow: 'hidden' }}>
+                <div className="dash-card" style={{ background: 'linear-gradient(135deg, #ef4444 0%, #b91c1c 100%)', color: 'white', position: 'relative', overflow: 'hidden' }}>
                     <svg style={{ position: 'absolute', right: '-10px', bottom: '-10px', opacity: 0.2 }} width="100" height="100" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                         <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
                     </svg>
@@ -87,11 +87,11 @@ export default function AdminDashboard() {
                 </div>
             </div>
 
-            <div className="dash-card" style={{ marginTop: '32px', padding: '32px' }}>
+            <div className="dash-card" style={{ marginTop: '32px' }}>
                 <h3 style={{ color: 'var(--text-color)', fontSize: '1.2rem', marginBottom: '32px', fontWeight: 600 }}>Statistik Pengunjung Sistem (7 Hari)</h3>
 
-                <div style={{ width: '100%', height: 350 }}>
-                    <ResponsiveContainer width="100%" height="100%">
+                <div style={{ width: '100%' }}>
+                    <ResponsiveContainer width="100%" height={350}>
                         <AreaChart data={chartData} margin={{ top: 10, right: 30, left: -20, bottom: 0 }}>
                             <defs>
                                 <linearGradient id="colorAdminClicks" x1="0" y1="0" x2="0" y2="1">
