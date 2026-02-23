@@ -49,7 +49,7 @@ export default function DashboardLayout() {
     return (
         <div className="dashboard-container">
             <SEO title={`${currentTabLabel} - Racun Link Dashboard`} />
-            <aside className="dashboard-sidebar">
+            <aside className={`dashboard-sidebar ${sidebarOpen ? 'open' : ''}`}>
                 <div className="sidebar-header">
                     <h2>
                         Racun<span>Link</span>

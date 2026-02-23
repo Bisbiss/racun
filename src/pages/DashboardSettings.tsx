@@ -94,6 +94,7 @@ export default function DashboardSettings() {
             setMessage({ type: 'success', text: 'Profil berhasil diperbarui!' });
             setRefreshKey(Date.now());
         } catch (error: any) {
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             setMessage({ type: 'error', text: error.message });
         } finally {
             setLoading(false);

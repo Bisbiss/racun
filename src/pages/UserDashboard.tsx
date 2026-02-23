@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
@@ -6,6 +7,7 @@ export default function UserDashboard() {
     const [stats, setStats] = useState({ totalClicks: 0, totalLinks: 0, topLink: 'Memuat...' });
     const [chartData, setChartData] = useState<any[]>([]);
     const [userName, setUserName] = useState('');
+    const [recentLinks, setRecentLinks] = useState<any[]>([]);
 
     useEffect(() => {
         async function loadStats() {
@@ -62,6 +64,10 @@ export default function UserDashboard() {
                 topLink: topLinkObj ? `${topLinkObj.title} (${maxClicks} klik)` : 'Belum ada data'
             });
 
+            // Get recent links (last 5)
+            const sortedLinks = [...links].sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+            setRecentLinks(sortedLinks.slice(0, 5));
+
             // Prepare Chart Data (Last 7 days counting from today)
             const last7Days = Array.from({ length: 7 }).map((_, i) => {
                 const d = new Date();
@@ -99,11 +105,33 @@ export default function UserDashboard() {
 
     return (
         <div className="dashboard-container">
-            <div style={{ marginBottom: '32px' }}>
-                <h2 style={{ fontSize: '1.5rem', fontWeight: 600, color: 'var(--text-color)', marginBottom: '4px' }}>
-                    {getGreeting()}, {userName}! 👋
-                </h2>
-                <p style={{ color: 'var(--text-muted)' }}>Ini adalah pantauan aktivitas link tokomu selama 7 hari terakhir.</p>
+            {/* Greeting Card */}
+            <div className="dash-card" style={{ 
+                background: 'linear-gradient(135deg, var(--primary) 0%, #0891b2 100%)',
+                color: 'white',
+                border: 'none',
+                marginBottom: '32px'
+            }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>
+                    <div>
+                        <h2 style={{ fontSize: '1.5rem', fontWeight: 600, marginBottom: '8px', color: 'white' }}>
+                            {getGreeting()}, {userName}! 👋
+                        </h2>
+                        <p style={{ opacity: 0.9, margin: 0 }}>
+                            Ini adalah pantauan aktivitas link tokomu selama 7 hari terakhir.
+                        </p>
+                    </div>
+                    <div style={{ 
+                        padding: '12px', 
+                        background: 'rgba(255,255,255,0.2)', 
+                        borderRadius: '12px'
+                    }}>
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                        </svg>
+                    </div>
+                </div>
             </div>
 
             {/* Stats Grid */}
@@ -149,6 +177,73 @@ export default function UserDashboard() {
                     </div>
                     <p style={{ fontSize: '1.2rem', fontWeight: '700', color: 'var(--text-color)', margin: 0, marginTop: '8px' }}>{stats.topLink}</p>
                 </div>
+            </div>
+
+            {/* Cart / Recent Links Section */}
+            <div className="dash-card" style={{ marginBottom: '32px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+                    <h3 style={{ color: 'var(--text-color)', fontSize: '1.2rem', fontWeight: 600, margin: 0 }}>
+                        🛒 Tautan Terbaru
+                    </h3>
+                    <Link to="/dashboard/links" style={{ 
+                        color: 'var(--primary)', 
+                        fontSize: '0.9rem', 
+                        fontWeight: 600,
+                        textDecoration: 'none'
+                    }}>
+                        Lihat Semua
+                    </Link>
+                </div>
+
+                {recentLinks.length > 0 ? (
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                        {recentLinks.map(link => (
+                            <div key={link.id} style={{ 
+                                padding: '16px',
+                                border: '1px solid #e2e8f0',
+                                borderRadius: '12px',
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                                alignItems: 'center',
+                                flexWrap: 'wrap',
+                                gap: '12px'
+                            }}>
+                                <div>
+                                    <h4 style={{ margin: '0 0 4px 0', fontSize: '1rem', fontWeight: 600, color: 'var(--text-color)' }}>
+                                        {link.title || 'Tanpa Judul'}
+                                    </h4>
+                                    <p style={{ margin: 0, fontSize: '0.85rem', color: 'var(--text-muted)', wordBreak: 'break-all' }}>
+                                        {window.location.origin}/{link.slug}
+                                    </p>
+                                </div>
+                                <div style={{ display: 'flex', gap: '8px' }}>
+                                    <button onClick={() => navigator.clipboard.writeText(`${window.location.origin}/${link.slug}`)} style={{ 
+                                        padding: '8px 12px',
+                                        borderRadius: '8px',
+                                        border: '1px solid var(--primary)',
+                                        background: 'transparent',
+                                        color: 'var(--primary)',
+                                        fontSize: '0.85rem',
+                                        cursor: 'pointer'
+                                    }}>
+                                        Salin
+                                    </button>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                ) : (
+                    <div style={{ textAlign: 'center', padding: '40px 20px', color: 'var(--text-muted)' }}>
+                        <p style={{ margin: 0 }}>Belum ada tautan yang dibuat.</p>
+                        <Link to="/dashboard/links" style={{ 
+                            color: 'var(--primary)', 
+                            marginTop: '12px',
+                            display: 'inline-block'
+                        }}>
+                            Buat Tautan Pertama
+                        </Link>
+                    </div>
+                )}
             </div>
 
             {/* Chart Card */}

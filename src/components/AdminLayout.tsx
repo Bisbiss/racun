@@ -62,7 +62,7 @@ export default function AdminLayout() {
     return (
         <div className="dashboard-container">
             <SEO title={`${currentTabLabel} - Admin Racun Link`} />
-            <aside className="dashboard-sidebar" style={{ borderRight: '1px solid #fecaca' }}>
+            <aside className={`dashboard-sidebar ${sidebarOpen ? 'open' : ''}`} style={{ borderRight: '1px solid #fecaca' }}>
                 <div className="sidebar-header">
                     <h2>
                         Racun<span style={{ color: '#ef4444' }}>Admin</span>
