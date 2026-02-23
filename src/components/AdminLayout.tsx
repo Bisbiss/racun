@@ -9,7 +9,6 @@ export default function AdminLayout() {
     const navigate = useNavigate();
     const [isAdmin, setIsAdmin] = useState(false);
     const [loading, setLoading] = useState(true);
-    const [sidebarOpen, setSidebarOpen] = useState<boolean>(false);
 
     useEffect(() => {
         async function checkAdmin() {
@@ -62,8 +61,7 @@ export default function AdminLayout() {
     return (
         <div className="dashboard-container">
             <SEO title={`${currentTabLabel} - Admin Racun Link`} />
-            {/* Sidebar */}
-            <aside className={`dashboard-sidebar ${sidebarOpen ? 'open' : ''}`} style={{ borderRight: '1px solid #fecaca' }}>
+            <aside className="dashboard-sidebar" style={{ borderRight: '1px solid #fecaca' }}>
                 <div className="sidebar-header">
                     <h2>
                         Racun<span style={{ color: '#ef4444' }}>Admin</span>
@@ -75,7 +73,6 @@ export default function AdminLayout() {
                         <Link
                             key={item.path}
                             to={item.path}
-                            onClick={() => setSidebarOpen(false)}
                             style={{
                                 display: 'flex',
                                 alignItems: 'center',
@@ -94,17 +91,13 @@ export default function AdminLayout() {
                         </Link>
                     ))}
 
-                    <button onClick={() => {
-                        handleLogout();
-                        setSidebarOpen(false);
-                    }} className="sidebar-link logout-btn" style={{ marginTop: 'auto', background: 'none', border: 'none', cursor: 'pointer', textAlign: 'left', fontSize: '1rem', color: '#ef4444', display: 'flex', alignItems: 'center', gap: '12px', padding: '12px 16px' }}>
+                    <button onClick={handleLogout} className="sidebar-link logout-btn" style={{ marginTop: 'auto', background: 'none', border: 'none', cursor: 'pointer', textAlign: 'left', fontSize: '1rem', color: '#ef4444', display: 'flex', alignItems: 'center', gap: '12px', padding: '12px 16px' }}>
                         <span className="sidebar-icon">🚪</span>
                         Logout
                     </button>
                 </nav>
             </aside>
 
-            {/* Main Content */}
             <main className="dashboard-main">
                 <header className="dashboard-header" style={{ borderBottom: '1px solid rgba(239, 68, 68, 0.2)' }}>
                     <h1>{currentTabLabel}</h1>
@@ -114,16 +107,6 @@ export default function AdminLayout() {
                     <Outlet />
                 </div>
             </main>
-
-            {/* Mobile Sidebar Toggle Button */}
-            <button 
-                className="sidebar-toggle" 
-                onClick={() => setSidebarOpen(!sidebarOpen)}
-                aria-label={sidebarOpen ? "Tutup Sidebar" : "Buka Sidebar"}
-                style={{ background: '#ef4444' }}
-            >
-                {sidebarOpen ? '✕' : '☰'}
-            </button>
         </div>
     );
 }

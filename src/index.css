@@ -51,22 +51,3 @@ a, button {
     display: none !important;
   }
 }
-
-/* Mobile responsive adjustments for non-dashboard pages */
-@media (max-width: 768px) {
-  .mobile-only-block {
-    display: block !important;
-  }
-  
-  h2 {
-    font-size: 1.25rem !important;
-  }
-  
-  h3 {
-    font-size: 1rem !important;
-  }
-  
-  .recharts-responsive-container {
-    height: 250px !important;
-  }
-}
