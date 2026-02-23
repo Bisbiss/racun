@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import ProfileHeader from '../components/ProfileHeader'
 import SocialLinks from '../components/SocialLinks'
 import LinkCard from '../components/LinkCard'
+import SEO from '../components/SEO'
 import { useParams } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import '../App.css'
@@ -54,12 +55,18 @@ export default function UserProfile() {
     };
 
     if (loading) {
-        return <div style={{ display: 'flex', minHeight: '100vh', alignItems: 'center', justifyContent: 'center' }}>Memuat profil...</div>;
+        return (
+            <div style={{ display: 'flex', minHeight: '100vh', alignItems: 'center', justifyContent: 'center' }}>
+                <SEO title={`Loading...`} />
+                Memuat profil...
+            </div>
+        );
     }
 
     if (!profile) {
         return (
             <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding: '20px' }}>
+                <SEO title={`Profil Tidak Ditemukan - Racun Link`} />
                 <h1 style={{ fontSize: '4rem', marginBottom: '10px' }}>Opsi.</h1>
                 <p style={{ color: 'var(--text-muted)' }}>Profil <b>@{username}</b> tidak ditemukan atau belum dibuat.</p>
                 <a href="/" style={{ marginTop: '20px', padding: '10px 20px', background: 'var(--primary)', color: 'white', borderRadius: '50px', textDecoration: 'none' }}>Buat punyamu sekarang</a>
@@ -69,13 +76,22 @@ export default function UserProfile() {
 
     return (
         <div className="layout-container" style={{ background: profile.theme_color ? `linear-gradient(to bottom, #fff, ${profile.theme_color}33)` : 'var(--bg-color)' }}>
+            <SEO
+                title={`${profile.full_name || username} - Racun Link`}
+                description={profile.bio || `Koleksi link rekomendasi dari ${profile.full_name || username}. Temukan barang-barang menarik dan racun belanja online di sini.`}
+                name={profile.full_name || username}
+            />
             <main className="main-content">
                 <ProfileHeader
                     name={profile.full_name || profile.username}
                     bio={profile.bio}
                     avatarUrl={profile.avatar_url}
                 />
-                <SocialLinks />
+                <SocialLinks
+                    instagram={profile.instagram_url}
+                    tiktok={profile.tiktok_url}
+                    whatsapp={profile.whatsapp_url}
+                />
 
                 <div className="links-container">
                     {links.map((link, index) => (
@@ -93,7 +109,7 @@ export default function UserProfile() {
             </main>
 
             <footer className="footer">
-                <p>{profile.username || 'Racun'} Link &copy; {new Date().getFullYear()}</p>
+                <p>{profile.username || 'Racun'} &copy; {new Date().getFullYear()}</p>
             </footer>
         </div>
     )

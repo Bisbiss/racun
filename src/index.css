@@ -37,3 +37,17 @@ body {
 a, button {
   -webkit-tap-highlight-color: transparent;
 }
+
+/* Login Split Screen Utilities */
+.login-sidebar {
+  display: none !important;
+}
+
+@media (min-width: 768px) {
+  .login-sidebar {
+    display: flex !important;
+  }
+  .mobile-only-block {
+    display: none !important;
+  }
+}

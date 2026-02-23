@@ -9,6 +9,9 @@ create table public.profiles (
   full_name text,
   bio text,
   avatar_url text,
+  instagram_url text,
+  tiktok_url text,
+  whatsapp_url text,
   theme_color text default '#10b981', -- Using our emerald green default
   created_at timestamp with time zone default timezone('utc'::text, now()) not null
 );

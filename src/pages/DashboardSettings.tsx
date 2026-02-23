@@ -5,7 +5,7 @@ const RESERVED_USERNAMES = ['admin', 'dashboard', 'login', 'register', 'api', 'a
 
 export default function DashboardSettings() {
     const [loading, setLoading] = useState(false);
-    const [profile, setProfile] = useState({ username: '', full_name: '', bio: '', id: '' });
+    const [profile, setProfile] = useState({ username: '', full_name: '', bio: '', id: '', avatar_url: '', instagram_url: '', tiktok_url: '', whatsapp_url: '' });
     const [message, setMessage] = useState({ type: '', text: '' });
     const [refreshKey, setRefreshKey] = useState(Date.now());
 
@@ -26,6 +26,10 @@ export default function DashboardSettings() {
                     username: data.username || '',
                     full_name: data.full_name || '',
                     bio: data.bio || '',
+                    avatar_url: data.avatar_url || '',
+                    instagram_url: data.instagram_url || '',
+                    tiktok_url: data.tiktok_url || '',
+                    whatsapp_url: data.whatsapp_url || '',
                 });
             }
         }
@@ -77,6 +81,10 @@ export default function DashboardSettings() {
                     username: lowerUsername,
                     full_name: profile.full_name,
                     bio: profile.bio,
+                    avatar_url: profile.avatar_url,
+                    instagram_url: profile.instagram_url,
+                    tiktok_url: profile.tiktok_url,
+                    whatsapp_url: profile.whatsapp_url,
                 });
 
             if (error) throw error;
@@ -146,6 +154,51 @@ export default function DashboardSettings() {
                             onChange={handleChange}
                             placeholder="Ceritakan sedikit tentang produk kamu..."
                             style={{ padding: '12px', borderRadius: '8px', border: '1px solid #ddd', fontSize: '1rem', fontFamily: 'inherit' }}
+                        />
+                    </div>
+
+                    {/* Additional Settings */}
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginTop: '16px' }}>
+                        <h4 style={{ color: 'var(--text-color)', fontSize: '1rem', margin: '0 0 8px 0' }}>Media & Sosial</h4>
+
+                        <label style={{ fontSize: '0.9rem', fontWeight: '600', color: 'var(--text-color)' }}>Link Foto Profil (Avatar URL)</label>
+                        <input
+                            type="url"
+                            name="avatar_url"
+                            value={profile.avatar_url}
+                            onChange={handleChange}
+                            placeholder="https://..."
+                            style={{ padding: '12px', borderRadius: '8px', border: '1px solid #ddd', fontSize: '0.9rem', marginBottom: '8px' }}
+                        />
+
+                        <label style={{ fontSize: '0.9rem', fontWeight: '600', color: 'var(--text-color)' }}>Instagram URL</label>
+                        <input
+                            type="url"
+                            name="instagram_url"
+                            value={profile.instagram_url}
+                            onChange={handleChange}
+                            placeholder="https://instagram.com/..."
+                            style={{ padding: '12px', borderRadius: '8px', border: '1px solid #ddd', fontSize: '0.9rem', marginBottom: '8px' }}
+                        />
+
+                        <label style={{ fontSize: '0.9rem', fontWeight: '600', color: 'var(--text-color)' }}>TikTok URL</label>
+                        <input
+                            type="url"
+                            name="tiktok_url"
+                            value={profile.tiktok_url}
+                            onChange={handleChange}
+                            placeholder="https://tiktok.com/@..."
+                            style={{ padding: '12px', borderRadius: '8px', border: '1px solid #ddd', fontSize: '0.9rem', marginBottom: '8px' }}
+                        />
+
+                        <label style={{ fontSize: '0.9rem', fontWeight: '600', color: 'var(--text-color)' }}>Nomor WhatsApp (dengan awalan 62)</label>
+                        <input
+                            type="text"
+                            name="whatsapp_url"
+                            value={profile.whatsapp_url}
+                            onChange={handleChange}
+                            placeholder="62812xxxxxx"
+                            style={{ padding: '12px', borderRadius: '8px', border: '1px solid #ddd', fontSize: '0.9rem', marginBottom: '8px' }}
                         />
                     </div>
 

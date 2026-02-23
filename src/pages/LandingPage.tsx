@@ -1,9 +1,14 @@
 import { Link } from 'react-router-dom';
+import SEO from '../components/SEO';
 import './LandingPage.css';
 
 export default function LandingPage() {
     return (
         <div className="lp-container">
+            <SEO
+                title="Racun Link - Satu Link untuk Semua Racunmu"
+                description="Buat halaman link bio yang estetik, kumpulkan link affiliate TikTok, Shopee, dan Tokopedia, dan tingkatkan konversi jualan kamu."
+            />
             <nav className="lp-nav">
                 <div className="lp-logo" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -26,7 +31,7 @@ export default function LandingPage() {
                     </p>
                     <div className="lp-actions">
                         <Link to="/login" className="lp-btn lp-btn-primary">Mulai Sekarang</Link>
-                        <Link to="/sarah" className="lp-btn lp-btn-secondary">Lihat Demo</Link>
+                        <Link to="/kubis" className="lp-btn lp-btn-secondary">Lihat Demo</Link>
                     </div>
                 </section>
 

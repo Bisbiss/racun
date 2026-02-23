@@ -2,6 +2,10 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import LandingPage from './pages/LandingPage'
 import UserProfile from './pages/UserProfile'
 import AdminDashboard from './pages/AdminDashboard'
+import AdminUsers from './pages/AdminUsers'
+import AdminLinks from './pages/AdminLinks'
+import AdminSettings from './pages/AdminSettings'
+import AdminLayout from './components/AdminLayout'
 import UserDashboard from './pages/UserDashboard'
 import DashboardLinks from './pages/DashboardLinks'
 import DashboardSettings from './pages/DashboardSettings'
@@ -15,8 +19,15 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<LandingPage />} />
-        <Route path="/admin" element={<AdminDashboard />} />
         <Route path="/login" element={<Login />} />
+
+        {/* Protected Admin Routes */}
+        <Route path="/admin" element={<AdminLayout />}>
+          <Route index element={<AdminDashboard />} />
+          <Route path="users" element={<AdminUsers />} />
+          <Route path="links" element={<AdminLinks />} />
+          <Route path="settings" element={<AdminSettings />} />
+        </Route>
 
         {/* Protected Dashboard Routes */}
         <Route element={<ProtectedRoute />}>
