@@ -2,15 +2,18 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import './UserDashboard.css';
 
 export default function UserDashboard() {
-    const [stats, setStats] = useState({ totalClicks: 0, totalLinks: 0, topLink: 'Memuat...' });
+    const [stats, setStats] = useState({ totalClicks: 0, totalLinks: 0, topLink: 'Belum ada data', topLinkClicks: 0 });
     const [chartData, setChartData] = useState<any[]>([]);
     const [userName, setUserName] = useState('');
     const [recentLinks, setRecentLinks] = useState<any[]>([]);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         async function loadStats() {
+            setLoading(true);
             const { data: { session } } = await supabase.auth.getSession();
             if (!session) return;
             const userId = session.user.id;
@@ -61,7 +64,8 @@ export default function UserDashboard() {
             setStats({
                 totalClicks: allClicks.length,
                 totalLinks: links.filter(l => l.is_active).length, // Only count active
-                topLink: topLinkObj ? `${topLinkObj.title} (${maxClicks} klik)` : 'Belum ada data'
+                topLink: topLinkObj ? topLinkObj.title : 'Belum ada data',
+                topLinkClicks: maxClicks
             });
 
             // Get recent links (last 5)
@@ -90,6 +94,7 @@ export default function UserDashboard() {
             });
 
             setChartData(last7Days);
+            setLoading(false);
         }
 
         loadStats();
@@ -103,189 +108,146 @@ export default function UserDashboard() {
         return "Selamat Malam";
     };
 
+    if (loading) {
+        return <div style={{ padding: '60px 20px', textAlign: 'center', color: 'var(--text-muted)' }}>Mempersiapkan Dasbor...</div>;
+    }
+
     return (
-        <div className="dashboard-container">
+        <div className="ud-container">
             {/* Greeting Card */}
-            <div className="dash-card" style={{
-                background: 'linear-gradient(135deg, var(--primary) 0%, #0891b2 100%)',
-                color: 'white',
-                border: 'none',
-                marginBottom: '32px'
-            }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>
-                    <div>
-                        <h2 style={{ fontSize: '1.5rem', fontWeight: 600, marginBottom: '8px', color: 'white' }}>
-                            {getGreeting()}, {userName}! 👋
-                        </h2>
-                        <p style={{ opacity: 0.9, margin: 0 }}>
-                            Ini adalah pantauan aktivitas link tokomu selama 7 hari terakhir.
-                        </p>
-                    </div>
-                    <div style={{
-                        padding: '12px',
-                        background: 'rgba(255,255,255,0.2)',
-                        borderRadius: '12px'
-                    }}>
-                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
-                            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
-                        </svg>
-                    </div>
+            <div className="ud-greeting">
+                <div className="ud-greeting-text">
+                    <h2>{getGreeting()}, {userName}! 👋</h2>
+                    <p>Pantau perkembangan tautan tokomu dalam 7 hari terakhir.</p>
+                </div>
+                <div className="ud-greeting-icon">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                        <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                    </svg>
                 </div>
             </div>
 
             {/* Stats Grid */}
-            <div className="stats-grid">
-                <div style={{
-                    background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
-                    borderRadius: '20px',
-                    padding: '24px',
-                    color: 'white',
-                    boxShadow: '0 10px 15px -3px rgba(16, 185, 129, 0.3)',
-                    position: 'relative',
-                    overflow: 'hidden'
-                }}>
-                    <svg style={{ position: 'absolute', right: '-10px', bottom: '-10px', opacity: 0.2 }} width="100" height="100" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
-                    </svg>
-                    <h3 style={{ fontSize: '1rem', fontWeight: 500, marginBottom: '8px', opacity: 0.9 }}>Total Klik URL</h3>
-                    <p style={{ fontSize: '2.5rem', fontWeight: '800', margin: 0 }}>{stats.totalClicks}</p>
-                </div>
-
-                <div className="dash-card" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
-                        <div style={{ padding: '10px', background: 'var(--bg-color)', borderRadius: '12px', color: 'var(--primary)' }}>
+            <div className="ud-stats-grid">
+                <div className="ud-stat-card">
+                    <div className="ud-stat-header">
+                        <div className="ud-stat-icon clicks">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
-                                <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
                             </svg>
                         </div>
-                        <h3 style={{ color: 'var(--text-muted)', fontSize: '1rem', margin: 0 }}>Tautan Aktif</h3>
+                        <h3 className="ud-stat-title">Total Pengunjung</h3>
                     </div>
-                    <p style={{ fontSize: '2.5rem', fontWeight: '800', color: 'var(--text-color)', margin: 0 }}>{stats.totalLinks}</p>
-                    <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginTop: '4px' }}>Sedang berjalan di profil</p>
+                    <div>
+                        <p className="ud-stat-value">{stats.totalClicks}</p>
+                        <p className="ud-stat-subtitle">Total klik keseluruhan</p>
+                    </div>
                 </div>
 
-                <div className="dash-card" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
-                        <div style={{ padding: '10px', background: '#FEF3C7', borderRadius: '12px', color: '#D97706' }}>
+                <div className="ud-stat-card">
+                    <div className="ud-stat-header">
+                        <div className="ud-stat-icon links">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                <line x1="9" y1="3" x2="9" y2="21"></line>
+                            </svg>
+                        </div>
+                        <h3 className="ud-stat-title">Tautan Aktif</h3>
+                    </div>
+                    <div>
+                        <p className="ud-stat-value">{stats.totalLinks}</p>
+                        <p className="ud-stat-subtitle">Link yang tampil di profil</p>
+                    </div>
+                </div>
+
+                <div className="ud-stat-card">
+                    <div className="ud-stat-header">
+                        <div className="ud-stat-icon top">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                 <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
                             </svg>
                         </div>
-                        <h3 style={{ color: 'var(--text-muted)', fontSize: '1rem', margin: 0 }}>Link Terpopuler</h3>
+                        <h3 className="ud-stat-title">Tautan Bintang</h3>
                     </div>
-                    <p style={{ fontSize: '1.2rem', fontWeight: '700', color: 'var(--text-color)', margin: 0, marginTop: '8px' }}>{stats.topLink}</p>
+                    <div>
+                        <p className="ud-stat-value" style={{ fontSize: '1.25rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                            {stats.topLink}
+                        </p>
+                        <p className="ud-stat-subtitle">{stats.topLinkClicks} klik didapatkan</p>
+                    </div>
                 </div>
             </div>
 
-            {/* Cart / Recent Links Section */}
-            <div className="dash-card" style={{ marginBottom: '32px' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-                    <h3 style={{ color: 'var(--text-color)', fontSize: '1.2rem', fontWeight: 600, margin: 0 }}>
-                        🛒 Tautan Terbaru
-                    </h3>
-                    <Link to="/dashboard/links" style={{
-                        color: 'var(--primary)',
-                        fontSize: '0.9rem',
-                        fontWeight: 600,
-                        textDecoration: 'none'
-                    }}>
-                        Lihat Semua
-                    </Link>
-                </div>
-
-                {recentLinks.length > 0 ? (
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                        {recentLinks.map(link => (
-                            <div key={link.id} style={{
-                                padding: '16px',
-                                border: '1px solid #e2e8f0',
-                                borderRadius: '12px',
-                                display: 'flex',
-                                justifyContent: 'space-between',
-                                alignItems: 'center',
-                                flexWrap: 'wrap',
-                                gap: '12px',
-                                transition: 'all 0.2s ease',
-                                cursor: 'pointer'
-                            }}
-                                onMouseEnter={(e) => e.currentTarget.style.borderColor = 'var(--primary)'}
-                                onMouseLeave={(e) => e.currentTarget.style.borderColor = '#e2e8f0'}>
-                                <div>
-                                    <h4 style={{ margin: '0 0 4px 0', fontSize: '1rem', fontWeight: 600, color: 'var(--text-color)' }}>
-                                        {link.title || 'Tanpa Judul'}
-                                    </h4>
-                                    <p style={{ margin: 0, fontSize: '0.85rem', color: 'var(--text-muted)', wordBreak: 'break-all' }}>
-                                        {window.location.origin}/{link.slug}
-                                    </p>
-                                </div>
-                                <div style={{ display: 'flex', gap: '8px' }}>
-                                    <button onClick={() => navigator.clipboard.writeText(`${window.location.origin}/${link.slug}`)} style={{
-                                        padding: '8px 12px',
-                                        borderRadius: '8px',
-                                        border: '1px solid var(--primary)',
-                                        background: 'var(--primary)',
-                                        color: 'white',
-                                        fontSize: '0.85rem',
-                                        cursor: 'pointer',
-                                        transition: 'all 0.2s ease'
-                                    }}
-                                        onMouseEnter={(e) => {
-                                            e.currentTarget.style.background = 'transparent';
-                                            e.currentTarget.style.color = 'var(--primary)';
-                                        }}
-                                        onMouseLeave={(e) => {
-                                            e.currentTarget.style.background = 'var(--primary)';
-                                            e.currentTarget.style.color = 'white';
-                                        }}>
-                                        Salin
-                                    </button>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                ) : (
-                    <div style={{ textAlign: 'center', padding: '40px 20px', color: 'var(--text-muted)' }}>
-                        <p style={{ margin: 0 }}>Belum ada tautan yang dibuat.</p>
-                        <Link to="/dashboard/links" style={{
-                            color: 'var(--primary)',
-                            marginTop: '12px',
-                            display: 'inline-block'
-                        }}>
-                            Buat Tautan Pertama
-                        </Link>
-                    </div>
-                )}
-            </div>
-
-            {/* Chart Card */}
-            <div className="dash-card">
-                <h3 style={{ color: 'var(--text-color)', fontSize: '1.2rem', marginBottom: '32px', fontWeight: 600 }}>Statistik Pengunjung (7 Hari)</h3>
-
-                <div style={{ width: '100%', overflowX: 'auto' }}>
-                    <div style={{ minWidth: '400px' }}>
-                        <ResponsiveContainer width="100%" height={350}>
-                            <AreaChart data={chartData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
+            {/* Bottom Grid: Chart & Recent */}
+            <div className="ud-bottom-grid">
+                {/* Chart Card */}
+                <div className="ud-chart-card">
+                    <h3 className="ud-card-title">Statistik 7 Hari (Klik)</h3>
+                    <div style={{ width: '100%', height: 320, position: 'relative' }}>
+                        <ResponsiveContainer width="100%" height="100%">
+                            <AreaChart data={chartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                                 <defs>
                                     <linearGradient id="colorClicks" x1="0" y1="0" x2="0" y2="1">
-                                        <stop offset="5%" stopColor="var(--primary)" stopOpacity={0.8} />
-                                        <stop offset="95%" stopColor="var(--primary)" stopOpacity={0} />
+                                        <stop offset="5%" stopColor="#10b981" stopOpacity={0.8} />
+                                        <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
                                     </linearGradient>
                                 </defs>
-                                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#E2E8F0" />
-                                <XAxis dataKey="display" stroke="var(--text-muted)" fontSize={12} tickLine={false} axisLine={false} dy={10} />
-                                <YAxis stroke="var(--text-muted)" fontSize={12} tickLine={false} axisLine={false} />
+                                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
+                                <XAxis dataKey="display" stroke="#94a3b8" fontSize={12} tickLine={false} axisLine={false} dy={10} />
+                                <YAxis stroke="#94a3b8" fontSize={12} tickLine={false} axisLine={false} />
                                 <Tooltip
-                                    contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 20px rgba(0,0,0,0.1)', padding: '12px' }}
-                                    itemStyle={{ color: 'var(--primary)', fontWeight: 600 }}
+                                    contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgba(0,0,0,0.1)', padding: '12px' }}
+                                    itemStyle={{ color: '#10b981', fontWeight: 600 }}
                                 />
-                                <Area type="monotone" dataKey="clicks" name="Total Klik" stroke="var(--primary)" strokeWidth={3} fillOpacity={1} fill="url(#colorClicks)" />
+                                <Area type="monotone" dataKey="clicks" name="Sistem Klik" stroke="#10b981" strokeWidth={3} fillOpacity={1} fill="url(#colorClicks)" />
                             </AreaChart>
                         </ResponsiveContainer>
                     </div>
                 </div>
+
+                {/* Recent Links Card */}
+                <div className="ud-recent-card">
+                    <div className="ud-card-title">
+                        <span>Tautan Terbaru</span>
+                        <Link to="/dashboard/links" style={{ fontSize: '0.9rem', color: 'var(--primary)', textDecoration: 'none', fontWeight: 600 }}>Kelola</Link>
+                    </div>
+
+                    {recentLinks.length > 0 ? (
+                        <div className="ud-recent-list">
+                            {recentLinks.map(link => (
+                                <div key={link.id} className="ud-recent-item">
+                                    <div className="ud-recent-icon">
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                                            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                                        </svg>
+                                    </div>
+                                    <div className="ud-recent-info">
+                                        <h4 className="ud-recent-title">{link.title || 'Tanpa Judul'}</h4>
+                                        <a href={link.url} target="_blank" rel="noreferrer" className="ud-recent-url">{link.url}</a>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    ) : (
+                        <div className="ud-empty-state">
+                            <p style={{ margin: 0, marginBottom: '16px' }}>Belum ada tautan dibuat.</p>
+                            <Link to="/dashboard/links" style={{
+                                padding: '8px 16px',
+                                background: 'var(--primary)',
+                                color: 'white',
+                                borderRadius: '8px',
+                                textDecoration: 'none',
+                                fontWeight: 600,
+                                display: 'inline-block'
+                            }}>
+                                Buat Sekarang
+                            </Link>
+                        </div>
+                    )}
+                </div>
             </div>
         </div>
-    )
+    );
 }

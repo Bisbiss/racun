@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /admin/
+Disallow: /dashboard
+Disallow: /dashboard/
+Disallow: /login
+
+# Sitemaps can be added here in the future
+# Sitemap: https://yourdomain.com/sitemap.xml
