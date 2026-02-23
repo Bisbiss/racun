@@ -8,6 +8,7 @@ export default function DashboardLayout() {
     const location = useLocation();
     const navigate = useNavigate();
     const [username, setUsername] = useState<string>('');
+    const [sidebarOpen, setSidebarOpen] = useState<boolean>(false);
 
     useEffect(() => {
         async function fetchUsername() {
@@ -48,7 +49,8 @@ export default function DashboardLayout() {
     return (
         <div className="dashboard-container">
             <SEO title={`${currentTabLabel} - Racun Link Dashboard`} />
-            <aside className="dashboard-sidebar">
+            {/* Sidebar */}
+            <aside className={`dashboard-sidebar ${sidebarOpen ? 'open' : ''}`}>
                 <div className="sidebar-header">
                     <h2>
                         Racun<span>Link</span>
@@ -65,19 +67,24 @@ export default function DashboardLayout() {
                             key={item.path}
                             to={item.path}
                             className={`sidebar-link ${location.pathname === item.path ? 'active' : ''}`}
+                            onClick={() => setSidebarOpen(false)}
                         >
                             <span className="sidebar-icon">{item.icon}</span>
                             {item.label}
                         </Link>
                     ))}
 
-                    <button onClick={handleLogout} className="sidebar-link logout-btn">
+                    <button onClick={() => {
+                        handleLogout();
+                        setSidebarOpen(false);
+                    }} className="sidebar-link logout-btn">
                         <span className="sidebar-icon">🚪</span>
                         Logout
                     </button>
                 </nav>
             </aside>
 
+            {/* Main Content */}
             <main className="dashboard-main">
                 <header className="dashboard-header">
                     <h1>
@@ -102,6 +109,15 @@ export default function DashboardLayout() {
                     <Outlet />
                 </div>
             </main>
+
+            {/* Mobile Sidebar Toggle Button */}
+            <button 
+                className="sidebar-toggle" 
+                onClick={() => setSidebarOpen(!sidebarOpen)}
+                aria-label={sidebarOpen ? "Tutup Sidebar" : "Buka Sidebar"}
+            >
+                {sidebarOpen ? '✕' : '☰'}
+            </button>
         </div>
     );
 }
