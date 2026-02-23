@@ -148,6 +148,21 @@
     padding: 0 16px !important;
     width: 100%;
   }
+
+  .dashboard-header {
+    padding: 20px 0;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .dashboard-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .dash-card {
+    padding: 16px;
+  }
   
   .sidebar-toggle-btn {
     position: fixed;

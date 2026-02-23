@@ -106,7 +106,7 @@ export default function UserDashboard() {
     return (
         <div className="dashboard-container">
             {/* Greeting Card */}
-            <div className="dash-card" style={{ 
+            <div className="dash-card" style={{
                 background: 'linear-gradient(135deg, var(--primary) 0%, #0891b2 100%)',
                 color: 'white',
                 border: 'none',
@@ -121,9 +121,9 @@ export default function UserDashboard() {
                             Ini adalah pantauan aktivitas link tokomu selama 7 hari terakhir.
                         </p>
                     </div>
-                    <div style={{ 
-                        padding: '12px', 
-                        background: 'rgba(255,255,255,0.2)', 
+                    <div style={{
+                        padding: '12px',
+                        background: 'rgba(255,255,255,0.2)',
                         borderRadius: '12px'
                     }}>
                         <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -185,9 +185,9 @@ export default function UserDashboard() {
                     <h3 style={{ color: 'var(--text-color)', fontSize: '1.2rem', fontWeight: 600, margin: 0 }}>
                         🛒 Tautan Terbaru
                     </h3>
-                    <Link to="/dashboard/links" style={{ 
-                        color: 'var(--primary)', 
-                        fontSize: '0.9rem', 
+                    <Link to="/dashboard/links" style={{
+                        color: 'var(--primary)',
+                        fontSize: '0.9rem',
                         fontWeight: 600,
                         textDecoration: 'none'
                     }}>
@@ -198,7 +198,7 @@ export default function UserDashboard() {
                 {recentLinks.length > 0 ? (
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                         {recentLinks.map(link => (
-                            <div key={link.id} style={{ 
+                            <div key={link.id} style={{
                                 padding: '16px',
                                 border: '1px solid #e2e8f0',
                                 borderRadius: '12px',
@@ -209,9 +209,9 @@ export default function UserDashboard() {
                                 gap: '12px',
                                 transition: 'all 0.2s ease',
                                 cursor: 'pointer'
-                            }} 
-                            onMouseEnter={(e) => e.currentTarget.style.borderColor = 'var(--primary)'} 
-                            onMouseLeave={(e) => e.currentTarget.style.borderColor = '#e2e8f0'}>
+                            }}
+                                onMouseEnter={(e) => e.currentTarget.style.borderColor = 'var(--primary)'}
+                                onMouseLeave={(e) => e.currentTarget.style.borderColor = '#e2e8f0'}>
                                 <div>
                                     <h4 style={{ margin: '0 0 4px 0', fontSize: '1rem', fontWeight: 600, color: 'var(--text-color)' }}>
                                         {link.title || 'Tanpa Judul'}
@@ -221,7 +221,7 @@ export default function UserDashboard() {
                                     </p>
                                 </div>
                                 <div style={{ display: 'flex', gap: '8px' }}>
-                                    <button onClick={() => navigator.clipboard.writeText(`${window.location.origin}/${link.slug}`)} style={{ 
+                                    <button onClick={() => navigator.clipboard.writeText(`${window.location.origin}/${link.slug}`)} style={{
                                         padding: '8px 12px',
                                         borderRadius: '8px',
                                         border: '1px solid var(--primary)',
@@ -230,15 +230,15 @@ export default function UserDashboard() {
                                         fontSize: '0.85rem',
                                         cursor: 'pointer',
                                         transition: 'all 0.2s ease'
-                                    }} 
-                                    onMouseEnter={(e) => {
-                                        e.currentTarget.style.background = 'transparent';
-                                        e.currentTarget.style.color = 'var(--primary)';
-                                    }} 
-                                    onMouseLeave={(e) => {
-                                        e.currentTarget.style.background = 'var(--primary)';
-                                        e.currentTarget.style.color = 'white';
-                                    }}>
+                                    }}
+                                        onMouseEnter={(e) => {
+                                            e.currentTarget.style.background = 'transparent';
+                                            e.currentTarget.style.color = 'var(--primary)';
+                                        }}
+                                        onMouseLeave={(e) => {
+                                            e.currentTarget.style.background = 'var(--primary)';
+                                            e.currentTarget.style.color = 'white';
+                                        }}>
                                         Salin
                                     </button>
                                 </div>
@@ -248,8 +248,8 @@ export default function UserDashboard() {
                 ) : (
                     <div style={{ textAlign: 'center', padding: '40px 20px', color: 'var(--text-muted)' }}>
                         <p style={{ margin: 0 }}>Belum ada tautan yang dibuat.</p>
-                        <Link to="/dashboard/links" style={{ 
-                            color: 'var(--primary)', 
+                        <Link to="/dashboard/links" style={{
+                            color: 'var(--primary)',
                             marginTop: '12px',
                             display: 'inline-block'
                         }}>
@@ -263,25 +263,27 @@ export default function UserDashboard() {
             <div className="dash-card">
                 <h3 style={{ color: 'var(--text-color)', fontSize: '1.2rem', marginBottom: '32px', fontWeight: 600 }}>Statistik Pengunjung (7 Hari)</h3>
 
-                <div style={{ width: '100%' }}>
-                    <ResponsiveContainer width="100%" height={350}>
-                        <AreaChart data={chartData} margin={{ top: 10, right: 30, left: -20, bottom: 0 }}>
-                            <defs>
-                                <linearGradient id="colorClicks" x1="0" y1="0" x2="0" y2="1">
-                                    <stop offset="5%" stopColor="var(--primary)" stopOpacity={0.8} />
-                                    <stop offset="95%" stopColor="var(--primary)" stopOpacity={0} />
-                                </linearGradient>
-                            </defs>
-                            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#E2E8F0" />
-                            <XAxis dataKey="display" stroke="var(--text-muted)" fontSize={12} tickLine={false} axisLine={false} dy={10} />
-                            <YAxis stroke="var(--text-muted)" fontSize={12} tickLine={false} axisLine={false} />
-                            <Tooltip
-                                contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 20px rgba(0,0,0,0.1)', padding: '12px' }}
-                                itemStyle={{ color: 'var(--primary)', fontWeight: 600 }}
-                            />
-                            <Area type="monotone" dataKey="clicks" name="Total Klik" stroke="var(--primary)" strokeWidth={3} fillOpacity={1} fill="url(#colorClicks)" />
-                        </AreaChart>
-                    </ResponsiveContainer>
+                <div style={{ width: '100%', overflowX: 'auto' }}>
+                    <div style={{ minWidth: '400px' }}>
+                        <ResponsiveContainer width="100%" height={350}>
+                            <AreaChart data={chartData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
+                                <defs>
+                                    <linearGradient id="colorClicks" x1="0" y1="0" x2="0" y2="1">
+                                        <stop offset="5%" stopColor="var(--primary)" stopOpacity={0.8} />
+                                        <stop offset="95%" stopColor="var(--primary)" stopOpacity={0} />
+                                    </linearGradient>
+                                </defs>
+                                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#E2E8F0" />
+                                <XAxis dataKey="display" stroke="var(--text-muted)" fontSize={12} tickLine={false} axisLine={false} dy={10} />
+                                <YAxis stroke="var(--text-muted)" fontSize={12} tickLine={false} axisLine={false} />
+                                <Tooltip
+                                    contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 20px rgba(0,0,0,0.1)', padding: '12px' }}
+                                    itemStyle={{ color: 'var(--primary)', fontWeight: 600 }}
+                                />
+                                <Area type="monotone" dataKey="clicks" name="Total Klik" stroke="var(--primary)" strokeWidth={3} fillOpacity={1} fill="url(#colorClicks)" />
+                            </AreaChart>
+                        </ResponsiveContainer>
+                    </div>
                 </div>
             </div>
         </div>
