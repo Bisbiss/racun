@@ -52,37 +52,10 @@ a, button {
   }
 }
 
-/* Dashboard Responsive Styles */
-.dashboard-container {
-  width: 100%;
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 24px 16px;
-}
-
-.dash-card {
-  background: var(--card-bg);
-  backdrop-filter: blur(10px);
-  border: 1px solid var(--card-border);
-  border-radius: 20px;
-  padding: 24px;
-  transition: all 0.2s ease;
-}
-
-.dash-card:hover {
-  background: var(--card-bg-hover);
-  transform: translateY(-2px);
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
-}
-
-/* Mobile responsive adjustments */
+/* Mobile responsive adjustments for non-dashboard pages */
 @media (max-width: 768px) {
-  .dashboard-container {
-    padding: 16px 12px;
-  }
-  
-  .dash-card {
-    padding: 16px;
+  .mobile-only-block {
+    display: block !important;
   }
   
   h2 {
