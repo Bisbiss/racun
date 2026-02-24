@@ -1,73 +1,51 @@
-# React + TypeScript + Vite
+# Racun - Kelola Link Affiliate & Bio Link
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Sebuah alat sederhana untuk mengelola link affiliate atau bio link (seperti solusi *link-in-bio*) yang mudah digunakan dan di-custom.
 
-Currently, two official plugins are available:
+## 🎯 Fitur Utama
+- 📝 Tambahkan, edit, dan hapus link affiliate/bio link dengan mudah
+- 🎨 Tampilan responsif yang cocok untuk hp dan desktop
+- 🚀 Dapat di-deploy ke berbagai platform (Vercel, Netlify, Supabase, dll.)
+- 🔒 Aman dan terpercaya
+- ⚡ Cepat dan ringan (dibangun dengan React + TypeScript + Vite)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Cara Menjalankan Secara Lokal
+1. Clone repositori ini:
+   ```bash
+   git clone https://github.com/bisbiss/racun.git
+   cd racun
+   ```
+2. Install dependensi:
+   ```bash
+   npm install
+   ```
+3. Jalankan server development:
+   ```bash
+   npm run dev
+   ```
+4. Buka `http://localhost:5173` di browser kamu.
 
-## React Compiler
+## 📝 Cara Menggunakan
+1. Buka file konfigurasi atau halaman admin (jika tersedia)
+2. Tambahkan link yang ingin kamu kelola beserta deskripsi dan gambar
+3. Simpan perubahan
+4. Bagikan link hasilnya ke bio sosial media kamu
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## 🛠️ Build Untuk Produksi
+```bash
+npm run build
 ```
+Hasil build akan disimpan di folder `dist` yang dapat di-deploy ke hosting apapun.
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## 📦 Teknologi yang Digunakan
+- **React** - Library UI
+- **TypeScript** - Typed JavaScript
+- **Vite** - Build tool dan dev server
+- **Tailwind CSS** - Utility-first CSS framework
+- **Supabase** - Backend-as-a-Service untuk menyimpan data link
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## 🤝 Kontribusi
+Silakan buka *issue* atau *pull request* jika ingin berkontribusi pada proyek ini.
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## 📄 Lisensi
+Proyek ini dilisensikan di bawah lisensi MIT.
