@@ -97,28 +97,30 @@ export default function AdminDashboard() {
             </div>
 
             {/* Chart Card */}
-            <div className="dash-card">
+            <div className="dash-card" style={{ marginTop: '32px' }}>
                 <h3 style={{ color: 'var(--text-color)', fontSize: '1.2rem', marginBottom: '32px', fontWeight: 600 }}>Statistik Pengunjung Sistem (7 Hari)</h3>
 
-                <div style={{ width: '100%' }}>
-                    <ResponsiveContainer width="100%" height={350}>
-                        <AreaChart data={chartData} margin={{ top: 10, right: 30, left: -20, bottom: 0 }}>
-                            <defs>
-                                <linearGradient id="colorAdminClicks" x1="0" y1="0" x2="0" y2="1">
-                                    <stop offset="5%" stopColor="#ef4444" stopOpacity={0.8} />
-                                    <stop offset="95%" stopColor="#ef4444" stopOpacity={0} />
-                                </linearGradient>
-                            </defs>
-                            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#E2E8F0" />
-                            <XAxis dataKey="display" stroke="var(--text-muted)" fontSize={12} tickLine={false} axisLine={false} dy={10} />
-                            <YAxis stroke="var(--text-muted)" fontSize={12} tickLine={false} axisLine={false} />
-                            <Tooltip
-                                contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 20px rgba(0,0,0,0.1)', padding: '12px' }}
-                                itemStyle={{ color: '#ef4444', fontWeight: 600 }}
-                            />
-                            <Area type="monotone" dataKey="clicks" name="Total Klik Seluruh Sistem" stroke="#ef4444" strokeWidth={3} fillOpacity={1} fill="url(#colorAdminClicks)" />
-                        </AreaChart>
-                    </ResponsiveContainer>
+                <div style={{ width: '100%', overflowX: 'auto' }}>
+                    <div style={{ minWidth: '400px' }}>
+                        <ResponsiveContainer width="100%" height={350}>
+                            <AreaChart data={chartData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
+                                <defs>
+                                    <linearGradient id="colorAdminClicks" x1="0" y1="0" x2="0" y2="1">
+                                        <stop offset="5%" stopColor="#ef4444" stopOpacity={0.8} />
+                                        <stop offset="95%" stopColor="#ef4444" stopOpacity={0} />
+                                    </linearGradient>
+                                </defs>
+                                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#E2E8F0" />
+                                <XAxis dataKey="display" stroke="var(--text-muted)" fontSize={12} tickLine={false} axisLine={false} dy={10} />
+                                <YAxis stroke="var(--text-muted)" fontSize={12} tickLine={false} axisLine={false} />
+                                <Tooltip
+                                    contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 20px rgba(0,0,0,0.1)', padding: '12px' }}
+                                    itemStyle={{ color: '#ef4444', fontWeight: 600 }}
+                                />
+                                <Area type="monotone" dataKey="clicks" name="Total Klik Seluruh Sistem" stroke="#ef4444" strokeWidth={3} fillOpacity={1} fill="url(#colorAdminClicks)" />
+                            </AreaChart>
+                        </ResponsiveContainer>
+                    </div>
                 </div>
             </div>
         </div>

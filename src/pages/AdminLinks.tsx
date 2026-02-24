@@ -45,22 +45,22 @@ export default function AdminLinks() {
                     <tbody>
                         {links.map(link => (
                             <tr key={link.id} style={{ borderBottom: '1px solid #f1f5f9' }}>
-                                <td style={{ padding: '16px' }}>
-                                    <div style={{ fontWeight: 600, color: '#111827' }}>{link.title}</div>
-                                    <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}><a href={link.url} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--primary)' }}>{link.url}</a></div>
+                                <td style={{ padding: '16px', maxWidth: '300px' }}>
+                                    <div style={{ fontWeight: 600, color: '#111827', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{link.title}</div>
+                                    <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}><a href={link.url} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--primary)' }}>{link.url}</a></div>
                                 </td>
-                                <td style={{ padding: '16px', color: 'var(--text-color)' }}>
+                                <td style={{ padding: '16px', color: 'var(--text-color)', whiteSpace: 'nowrap' }}>
                                     <a href={`/${link.profiles?.username}`} target="_blank" rel="noopener noreferrer" style={{ color: '#1f2937', fontWeight: 500, textDecoration: 'none' }}>
                                         @{link.profiles?.username}
                                     </a>
                                 </td>
-                                <td style={{ padding: '16px' }}>
+                                <td style={{ padding: '16px', whiteSpace: 'nowrap' }}>
                                     {link.is_active ?
                                         <span style={{ background: '#d1fae5', color: '#065f46', padding: '4px 8px', borderRadius: '50px', fontSize: '0.8rem', fontWeight: 600 }}>Aktif</span> :
                                         <span style={{ background: '#fee2e2', color: '#991b1b', padding: '4px 8px', borderRadius: '50px', fontSize: '0.8rem', fontWeight: 600 }}>Mati</span>
                                     }
                                 </td>
-                                <td style={{ padding: '16px', textAlign: 'right' }}>
+                                <td style={{ padding: '16px', textAlign: 'right', whiteSpace: 'nowrap' }}>
                                     <button
                                         onClick={() => handleDelete(link.id)}
                                         style={{ backgroundColor: '#fee2e2', color: '#991b1b', border: 'none', padding: '6px 12px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.9rem', fontWeight: 500 }}

@@ -64,7 +64,7 @@ export default function AdminUsers() {
                                 </td>
                                 <td style={{ padding: '16px', color: 'var(--text-color)' }}>{user.full_name || '-'}</td>
                                 <td style={{ padding: '16px', color: 'var(--text-muted)' }}>{new Date(user.created_at).toLocaleDateString('id-ID')}</td>
-                                <td style={{ padding: '16px', textAlign: 'right' }}>
+                                <td style={{ padding: '16px', textAlign: 'right', whiteSpace: 'nowrap' }}>
                                     <a
                                         href={`/${user.username}`}
                                         target="_blank"

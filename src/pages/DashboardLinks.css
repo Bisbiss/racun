@@ -25,7 +25,7 @@
 }
 
 .dl-btn-add:hover {
-    background-color: #059669;
+    background-color: #059669; /* darker emerald */
 }
 
 /* Form */
@@ -95,8 +95,8 @@
 }
 
 .dl-item {
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
     align-items: center;
     padding: 16px;
     border: 1px solid #e2e8f0;
@@ -115,7 +115,6 @@
     display: flex;
     flex-direction: column;
     gap: 4px;
-    margin-right: 8px;
 }
 
 .dl-btn-move {
@@ -145,8 +144,7 @@
     display: flex;
     flex-direction: column;
     gap: 8px;
-    word-break: break-all;
-    flex: 1; 
+    min-width: 0; /* Ensures overflow-ellipsis works */
 }
 
 .dl-item-title {
@@ -160,6 +158,13 @@
     flex-wrap: wrap;
 }
 
+.dl-item-title span {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+}
+
 .dl-badge-clicks {
     background: #ecfdf5;
     color: #059669;
@@ -170,12 +175,16 @@
     display: flex;
     align-items: center;
     gap: 4px;
+    flex-shrink: 0;
 }
 
 .dl-item-url {
     color: var(--primary);
     font-size: 0.9rem;
     text-decoration: none;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .dl-item-url:hover {
@@ -185,7 +194,6 @@
 .dl-item-actions {
     display: flex;
     gap: 8px;
-    shrink: 0;
     align-items: center;
 }
 
@@ -209,6 +217,7 @@
     color: #475569;
     font-weight: 600;
     transition: all 0.2s;
+    white-space: nowrap;
 }
 
 .dl-btn-delete:hover {
@@ -225,22 +234,15 @@
 
 @media (max-width: 600px) {
     .dl-item {
-        align-items: flex-start;
+        grid-template-columns: auto 1fr;
+        gap: 12px 16px;
     }
     
-    .dl-item-content {
-        margin-left: 0;
-    }
-
     .dl-item-actions {
+        grid-column: 1 / -1;
         width: 100%;
         justify-content: flex-end;
-        margin-top: 8px;
-    }
-    
-    .dl-item-title {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 4px;
+        padding-top: 12px;
+        border-top: 1px dashed #e2e8f0;
     }
 }
