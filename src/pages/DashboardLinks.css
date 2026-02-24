@@ -25,7 +25,7 @@
 }
 
 .dl-btn-add:hover {
-    background-color: #059669; /* darker emerald */
+    background-color: #059669;
 }
 
 /* Form */
@@ -104,14 +104,49 @@
     background: white;
     box-shadow: 0 2px 4px rgba(0,0,0,0.02);
     gap: 16px;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.dl-item:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.dl-item-drag {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-right: 8px;
+}
+
+.dl-btn-move {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #94a3b8;
+    padding: 4px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s, color 0.2s;
+}
+
+.dl-btn-move:hover:not(:disabled) {
+    background: #f1f5f9;
+    color: #1e293b;
+}
+
+.dl-btn-move:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
 }
 
 .dl-item-content {
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 8px;
     word-break: break-all;
-    flex: 1; /* Allow taking remaining width */
+    flex: 1; 
 }
 
 .dl-item-title {
@@ -119,6 +154,22 @@
     font-size: 1.1rem;
     color: #1e293b;
     margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.dl-badge-clicks {
+    background: #ecfdf5;
+    color: #059669;
+    font-size: 0.75rem;
+    padding: 4px 8px;
+    border-radius: 50px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 4px;
 }
 
 .dl-item-url {
@@ -135,6 +186,7 @@
     display: flex;
     gap: 8px;
     shrink: 0;
+    align-items: center;
 }
 
 .dl-btn-toggle {
@@ -173,13 +225,22 @@
 
 @media (max-width: 600px) {
     .dl-item {
-        flex-direction: column;
         align-items: flex-start;
     }
     
+    .dl-item-content {
+        margin-left: 0;
+    }
+
     .dl-item-actions {
         width: 100%;
         justify-content: flex-end;
         margin-top: 8px;
+    }
+    
+    .dl-item-title {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
     }
 }
