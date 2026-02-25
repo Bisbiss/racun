@@ -17,9 +17,32 @@ export default function DashboardLinks() {
     const [loading, setLoading] = useState(true);
     const [isAdding, setIsAdding] = useState(false);
 
-    // New link form state
     const [newTitle, setNewTitle] = useState('');
     const [newUrl, setNewUrl] = useState('');
+    const [urlIsValid, setUrlIsValid] = useState<boolean | null>(null);
+
+    // Validate URL when it changes
+    useEffect(() => {
+        if (!newUrl) {
+            setUrlIsValid(null);
+            return;
+        }
+
+        const debounce = setTimeout(async () => {
+            // Basic regex format check first
+            const urlPattern = /^(https?:\/\/)?([\w.-]+)\.([a-z]{2,})(\/\S*)?$/i;
+            if (!urlPattern.test(newUrl)) {
+                setUrlIsValid(false);
+                return;
+            }
+
+            // In browser, full HTTP requests often fail due to CORS. 
+            // So we just assume it's valid if it passes the URL syntax regex.
+            setUrlIsValid(true);
+        }, 500);
+
+        return () => clearTimeout(debounce);
+    }, [newUrl]);
 
     useEffect(() => {
         fetchLinks();
@@ -77,6 +100,16 @@ export default function DashboardLinks() {
     async function handleAddLink(e: React.FormEvent) {
         e.preventDefault();
         if (!newTitle.trim() || !newUrl.trim()) return;
+        if (urlIsValid === false) {
+            alert('URL tidak valid. Harap periksa kembali.');
+            return;
+        }
+
+        // Auto append https:// if missing before submit
+        let finalUrl = newUrl.trim();
+        if (!finalUrl.startsWith('http://') && !finalUrl.startsWith('https://')) {
+            finalUrl = 'https://' + finalUrl;
+        }
 
         try {
             const { data: { session } } = await supabase.auth.getSession();
@@ -85,7 +118,7 @@ export default function DashboardLinks() {
             const { data, error } = await supabase.from('links').insert([{
                 user_id: session.user.id,
                 title: newTitle,
-                url: newUrl,
+                url: finalUrl,
                 icon: 'link', // Default icon
                 order_index: links.length // Append at the end
             }]).select();
@@ -98,6 +131,7 @@ export default function DashboardLinks() {
                 setIsAdding(false);
                 setNewTitle('');
                 setNewUrl('');
+                setUrlIsValid(null);
             }
         } catch (error) {
             console.error('Error adding link:', error);
@@ -180,17 +214,51 @@ export default function DashboardLinks() {
                         required
                         className="dl-input"
                     />
-                    <input
-                        type="url"
-                        placeholder="URL (Misal: https://shp.ee/...)"
-                        value={newUrl}
-                        onChange={(e) => setNewUrl(e.target.value)}
-                        required
-                        className="dl-input"
-                    />
+                    <div style={{ position: 'relative' }}>
+                        <input
+                            type="text"
+                            placeholder="URL (Misal: https://shp.ee/...)"
+                            value={newUrl}
+                            onChange={(e) => setNewUrl(e.target.value)}
+                            required
+                            className="dl-input"
+                            style={{
+                                borderColor: urlIsValid === false ? '#ef4444' : urlIsValid === true ? '#10b981' : '',
+                                paddingRight: '40px'
+                            }}
+                        />
+                        {urlIsValid !== null && newUrl && (
+                            <div style={{ position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)' }}>
+                                {urlIsValid ? (
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                ) : (
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ef4444" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
+                                )}
+                            </div>
+                        )}
+                        {urlIsValid === false && (
+                            <p style={{ color: '#ef4444', fontSize: '0.8rem', marginTop: '4px', marginBottom: '0' }}>Format URL tidak valid.</p>
+                        )}
+                    </div>
+
+                    {urlIsValid && (
+                        <div style={{ padding: '12px', background: '#f8fafc', borderRadius: '8px', border: '1px solid #e2e8f0', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                            <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 600 }}>Pratinjau Tautan:</span>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', overflow: 'hidden' }}>
+                                <div style={{ background: '#e2e8f0', width: '32px', height: '32px', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+                                </div>
+                                <div style={{ overflow: 'hidden' }}>
+                                    <h4 style={{ margin: 0, fontSize: '0.9rem', color: 'var(--text-color)', whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden' }}>{newTitle || 'Judul Tautan'}</h4>
+                                    <p style={{ margin: 0, fontSize: '0.8rem', color: 'var(--primary)', whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden' }}>{newUrl.startsWith('http') ? newUrl : `https://${newUrl}`}</p>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
                     <div className="dl-actions">
-                        <button type="submit" className="dl-btn-save">Simpan Link</button>
-                        <button type="button" onClick={() => setIsAdding(false)} className="dl-btn-cancel">Batal</button>
+                        <button type="submit" className="dl-btn-save" style={{ opacity: urlIsValid === false ? 0.5 : 1 }} disabled={urlIsValid === false}>Simpan Link</button>
+                        <button type="button" onClick={() => { setIsAdding(false); setNewUrl(''); setNewTitle(''); setUrlIsValid(null); }} className="dl-btn-cancel">Batal</button>
                     </div>
                 </form>
             )}
