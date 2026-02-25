@@ -44,7 +44,7 @@ export default function DashboardSettings() {
     const handleAvatarUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
         try {
             if (!profile.id) {
-                setMessage({ type: 'error', text: 'Harap Simpan Username terlebih dahulu sebelum mengunggah foto.' });
+                setMessage({ type: 'error', text: 'Harap Simpan Nama Pengguna terlebih dahulu sebelum mengunggah foto.' });
                 return;
             }
 
@@ -94,12 +94,12 @@ export default function DashboardSettings() {
             // 1. Validate reserved words
             const lowerUsername = profile.username.toLowerCase().trim();
             if (RESERVED_USERNAMES.includes(lowerUsername)) {
-                throw new Error('Username ini tidak dapat digunakan (Reserved Word).');
+                throw new Error('Nama pengguna ini tidak dapat digunakan (Dipesan Sistem).');
             }
 
             // 2. Format validation (alphanumeric and dashes only)
             if (!/^[a-z0-9-]+$/.test(lowerUsername)) {
-                throw new Error('Username hanya boleh berisi huruf kecil, angka, dan strip (-).');
+                throw new Error('Nama pengguna hanya boleh berisi huruf kecil, angka, dan strip (-).');
             }
 
             // 3. Check availability in DB (exclude current user)
@@ -110,7 +110,7 @@ export default function DashboardSettings() {
                 .neq('id', userId);
 
             if (existingChecks && existingChecks.length > 0) {
-                throw new Error('Username sudah digunakan oleh orang lain. Silakan pilih yang lain.');
+                throw new Error('Nama pengguna sudah dipakai orang lain. Silakan pilih yang lain.');
             }
 
             // 4. Update Profile (Upsert in case the record doesn't exist yet)
@@ -161,17 +161,17 @@ export default function DashboardSettings() {
                 {/* Left side: Form */}
                 <form onSubmit={handleSave} style={{ display: 'flex', flexDirection: 'column', gap: '20px', flex: '1 1 400px', maxWidth: '500px' }}>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                        <label style={{ fontSize: '0.9rem', fontWeight: '600', color: 'var(--text-color)' }}>Username</label>
+                        <label style={{ fontSize: '0.9rem', fontWeight: '600', color: 'var(--text-color)' }}>Nama Pengguna</label>
                         <input
                             type="text"
                             name="username"
                             value={profile.username}
                             onChange={handleChange}
                             required
-                            placeholder="username-kamu"
+                            placeholder="nama-pengguna-kamu"
                             style={{ padding: '12px', borderRadius: '8px', border: '1px solid #ddd', fontSize: '1rem' }}
                         />
-                        <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>{window.location.host}/<b>{profile.username || 'username'}</b></span>
+                        <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>{window.location.host}/<b>{profile.username || 'nama-pengguna'}</b></span>
                     </div>
 
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
@@ -270,7 +270,7 @@ export default function DashboardSettings() {
 
                 {/* Right side: Live Preview */}
                 <div style={{ flex: '1 1 300px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                    <h3 style={{ fontSize: '1rem', marginBottom: '16px', color: 'var(--text-muted)' }}>Preview Tampilan Publik</h3>
+                    <h3 style={{ fontSize: '1rem', marginBottom: '16px', color: 'var(--text-muted)' }}>Pratinjau Tampilan Publik</h3>
                     <div style={{
                         width: '100%',
                         maxWidth: '380px',
@@ -290,7 +290,7 @@ export default function DashboardSettings() {
                             />
                         ) : (
                             <div style={{ display: 'flex', height: '100%', alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding: '20px', color: 'var(--text-muted)' }}>
-                                <p>Silahkan isi dan simpan username terlebih dahulu untuk melihat preview.</p>
+                                <p>Silahkan isi dan simpan nama pengguna terlebih dahulu untuk melihat pratinjau.</p>
                             </div>
                         )}
                     </div>

@@ -39,18 +39,18 @@ export default function DashboardLayout() {
     };
 
     const navItems = [
-        { path: '/dashboard', label: 'Analytics', icon: '📊' },
-        { path: '/dashboard/links', label: 'Manage Links', icon: '🔗' },
-        { path: '/dashboard/settings', label: 'Settings', icon: '⚙️' },
+        { path: '/dashboard', label: 'Analitik', icon: '📊' },
+        { path: '/dashboard/links', label: 'Kelola Tautan', icon: '🔗' },
+        { path: '/dashboard/settings', label: 'Pengaturan', icon: '⚙️' },
     ];
 
-    const currentTabLabel = navItems.find(i => i.path === location.pathname)?.label || 'Dashboard';
+    const currentTabLabel = navItems.find(i => i.path === location.pathname)?.label || 'Dasbor';
 
     return (
         <div className="dashboard-container">
-            <SEO 
-                title={`${currentTabLabel} - Racun Link Dashboard`} 
-                description="Kelola link affiliate dan profil kamu di platform Racun Link" 
+            <SEO
+                title={`${currentTabLabel} - Dasbor Racun Link`}
+                description="Kelola link affiliate dan profil kamu di platform Racun Link"
             />
             <aside className={`dashboard-sidebar ${sidebarOpen ? 'open' : ''}`}>
                 <div className="sidebar-header">
@@ -81,7 +81,7 @@ export default function DashboardLayout() {
                         setSidebarOpen(false);
                     }} className="sidebar-link logout-btn">
                         <span className="sidebar-icon">🚪</span>
-                        Logout
+                        Keluar
                     </button>
                 </nav>
             </aside>
@@ -98,7 +98,7 @@ export default function DashboardLayout() {
                         onClick={(e) => {
                             if (!username) {
                                 e.preventDefault();
-                                alert('Silakan atur username di Settings terlebih dahulu.');
+                                alert('Silakan atur nama pengguna di Pengaturan terlebih dahulu.');
                             }
                         }}
                     >
@@ -112,8 +112,8 @@ export default function DashboardLayout() {
             </main>
 
             {/* Mobile Sidebar Toggle Button */}
-            <button 
-                className="sidebar-toggle-btn" 
+            <button
+                className="sidebar-toggle-btn"
                 onClick={() => setSidebarOpen(!sidebarOpen)}
                 aria-label={sidebarOpen ? "Tutup Sidebar" : "Buka Sidebar"}
             >
