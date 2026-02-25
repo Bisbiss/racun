@@ -64,7 +64,10 @@ export default function UserProfile() {
     if (loading) {
         return (
             <div style={{ display: 'flex', minHeight: '100vh', alignItems: 'center', justifyContent: 'center' }}>
-                <SEO title={`Loading...`} />
+                <SEO 
+                    title="Memuat Profil" 
+                    description="Tunggu sebentar, kami sedang memuat profil kamu."
+                />
                 Memuat profil...
             </div>
         );
@@ -73,7 +76,10 @@ export default function UserProfile() {
     if (!profile) {
         return (
             <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding: '20px' }}>
-                <SEO title={`Profil Tidak Ditemukan - Racun Link`} />
+                <SEO 
+                    title={`Profil Tidak Ditemukan`} 
+                    description={`Profil @${username} tidak ditemukan atau belum dibuat. Buat profil Racun Link kamu sendiri sekarang!`}
+                />
                 <h1 style={{ fontSize: '4rem', marginBottom: '10px' }}>Opsi.</h1>
                 <p style={{ color: 'var(--text-muted)' }}>Profil <b>@{username}</b> tidak ditemukan atau belum dibuat.</p>
                 <a href="/" style={{ marginTop: '20px', padding: '10px 20px', background: 'var(--primary)', color: 'white', borderRadius: '50px', textDecoration: 'none' }}>Buat punyamu sekarang</a>
@@ -86,7 +92,7 @@ export default function UserProfile() {
             <SEO
                 title={`${profile.full_name || username} - Racun Link`}
                 description={profile.bio || `Koleksi link rekomendasi dari ${profile.full_name || username}. Temukan barang-barang menarik dan racun belanja online di sini.`}
-                name={profile.full_name || username}
+                image={profile.avatar_url || "/og-image.png"}
             />
             <main className="main-content">
                 <ProfileHeader

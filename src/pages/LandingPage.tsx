@@ -38,14 +38,21 @@ export default function LandingPage() {
 
             <main className="lp-main">
                 <section className="lp-hero">
-                    <div className="lp-hero-badge">✨ Kumpulkan Link Affiliate-mu</div>
-                    <h1 className="lp-title">Satu Link untuk<br />Semua Racunmu.</h1>
-                    <p className="lp-subtitle">
-                        Tingkatkan konversi affiliate TikTok, Shopee, dan Tokopedia dengan halaman link yang estetik, cepat, dan mudah dibagikan di bio kamu.
-                    </p>
-                    <div className="lp-actions">
-                        <Link to="/login" className="lp-btn lp-btn-primary">Mulai Sekarang</Link>
-                        <Link to="/kubis" className="lp-btn lp-btn-secondary">Lihat Demo</Link>
+                    <div className="lp-hero-content">
+                        <div className="lp-hero-text">
+                            <div className="lp-hero-badge">✨ Kumpulkan Link Affiliate-mu</div>
+                            <h1 className="lp-title">Satu Link untuk<br />Semua Racunmu.</h1>
+                            <p className="lp-subtitle">
+                                Tingkatkan konversi affiliate TikTok, Shopee, dan Tokopedia dengan halaman link yang estetik, cepat, dan mudah dibagikan di bio kamu.
+                            </p>
+                            <div className="lp-actions">
+                                <Link to="/login" className="lp-btn lp-btn-primary">Mulai Sekarang</Link>
+                                <Link to="/kubis" className="lp-btn lp-btn-secondary">Lihat Demo</Link>
+                            </div>
+                        </div>
+                        <div className="lp-hero-illustration">
+                            <img src="/racun-illustration.png" alt="Ilustrasi Racun Link - Satu Link untuk Semua Link Affiliate" className="lp-hero-img" />
+                        </div>
                     </div>
                 </section>
 

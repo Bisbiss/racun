@@ -20,7 +20,10 @@ export default function Login() {
 
     return (
         <div style={{ display: 'flex', minHeight: '100vh', backgroundColor: '#fdfdfd' }}>
-            <SEO title="Masuk - Racun Link" />
+            <SEO 
+                title="Masuk - Racun Link" 
+                description="Masuk ke akun Racun Link kamu untuk mengelola link affiliate dan bio linkmu dengan mudah." 
+            />
 
             {/* Left Side Branding */}
             <div style={{

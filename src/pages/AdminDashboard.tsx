@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '../lib/supabase';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import SEO from '../components/SEO';
 import './AdminDashboard.css';
 
 export default function AdminDashboard() {
@@ -53,6 +54,10 @@ export default function AdminDashboard() {
 
     return (
         <div className="ad-container">
+            <SEO 
+                title="Dashboard Admin - Racun Link" 
+                description="Kelola semua pengguna, link, dan statistik klik di platform Racun Link." 
+            />
             {/* Stats Grid */}
             <div className="ad-stats-grid">
                 <div style={{

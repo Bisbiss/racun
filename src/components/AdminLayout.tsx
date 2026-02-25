@@ -61,7 +61,10 @@ export default function AdminLayout() {
 
     return (
         <div className="dashboard-container">
-            <SEO title={`${currentTabLabel} - Admin Racun Link`} />
+            <SEO 
+                title={`${currentTabLabel} - Admin Racun Link`} 
+                description="Kelola semua pengguna, link, dan statistik klik di platform Racun Link" 
+            />
             <aside className={`dashboard-sidebar ${sidebarOpen ? 'open' : ''}`} style={{ borderRight: '1px solid #fecaca' }}>
                 <div className="sidebar-header">
                     <h2>

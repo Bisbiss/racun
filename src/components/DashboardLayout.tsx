@@ -48,7 +48,10 @@ export default function DashboardLayout() {
 
     return (
         <div className="dashboard-container">
-            <SEO title={`${currentTabLabel} - Racun Link Dashboard`} />
+            <SEO 
+                title={`${currentTabLabel} - Racun Link Dashboard`} 
+                description="Kelola link affiliate dan profil kamu di platform Racun Link" 
+            />
             <aside className={`dashboard-sidebar ${sidebarOpen ? 'open' : ''}`}>
                 <div className="sidebar-header">
                     <h2>
