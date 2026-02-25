@@ -102,3 +102,26 @@ $$ language plpgsql security definer;
 create trigger on_auth_user_created
   after insert on auth.users
   for each row execute procedure public.handle_new_user();
+
+-- 4. Storage Bucket for Avatars
+-- Inserts a new public bucket called "avatars" if it doesn't exist
+insert into storage.buckets (id, name, public) 
+values ('avatars', 'avatars', true)
+on conflict (id) do nothing;
+
+-- Storage Policies for Avatars
+create policy "Avatar images are publicly accessible."
+  on storage.objects for select
+  using ( bucket_id = 'avatars' );
+
+create policy "Authenticated users can upload avatars."
+  on storage.objects for insert
+  with check ( bucket_id = 'avatars' AND auth.role() = 'authenticated' );
+
+create policy "Authenticated users can update their avatars."
+  on storage.objects for update
+  using ( bucket_id = 'avatars' AND auth.role() = 'authenticated' );
+
+create policy "Authenticated users can delete their avatars."
+  on storage.objects for delete
+  using ( bucket_id = 'avatars' AND auth.role() = 'authenticated' );

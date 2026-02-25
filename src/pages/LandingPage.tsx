@@ -1,8 +1,18 @@
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { supabase } from '../lib/supabase';
 import SEO from '../components/SEO';
 import './LandingPage.css';
 
 export default function LandingPage() {
+    const [hasSession, setHasSession] = useState(false);
+
+    useEffect(() => {
+        supabase.auth.getSession().then(({ data: { session } }) => {
+            setHasSession(!!session);
+        });
+    }, []);
+
     return (
         <div className="lp-container">
             <SEO
@@ -18,7 +28,11 @@ export default function LandingPage() {
                     Racun<span>Link</span>
                 </div>
                 <div className="lp-nav-actions">
-                    <Link to="/login" className="lp-btn lp-btn-small">Mulai / Masuk</Link>
+                    {hasSession ? (
+                        <Link to="/dashboard" className="lp-btn lp-btn-small" style={{ background: '#0f172a' }}>Dashboard Saya</Link>
+                    ) : (
+                        <Link to="/login" className="lp-btn lp-btn-small">Mulai / Masuk</Link>
+                    )}
                 </div>
             </nav>
 

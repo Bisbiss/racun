@@ -12,6 +12,7 @@ export default function UserProfile() {
     const [profile, setProfile] = useState<any>(null);
     const [links, setLinks] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
+    const [isOwner, setIsOwner] = useState(false);
 
     useEffect(() => {
         async function fetchUserData() {
@@ -37,6 +38,12 @@ export default function UserProfile() {
 
                 if (!linksError && linksData) {
                     setLinks(linksData);
+                }
+
+                // Check if current visitor is the owner of this profile
+                const { data: { session } } = await supabase.auth.getSession();
+                if (session && profileData && session.user.id === profileData.id) {
+                    setIsOwner(true);
                 }
             } catch (err) {
                 console.error(err);
@@ -107,6 +114,33 @@ export default function UserProfile() {
                     ))}
                 </div>
             </main>
+
+            {isOwner && (
+                <div style={{ position: 'fixed', bottom: '24px', right: '24px', zIndex: 50 }}>
+                    <a href="/dashboard" style={{
+                        background: '#0f172a',
+                        color: 'white',
+                        padding: '12px 24px',
+                        borderRadius: '50px',
+                        textDecoration: 'none',
+                        fontWeight: 600,
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '8px',
+                        boxShadow: '0 10px 25px rgba(0,0,0,0.2)',
+                        transition: 'transform 0.2s',
+                    }}
+                        onMouseEnter={e => e.currentTarget.style.transform = 'translateY(-4px)'}
+                        onMouseLeave={e => e.currentTarget.style.transform = 'none'}
+                    >
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                        </svg>
+                        Edit Tautan
+                    </a>
+                </div>
+            )}
 
             <footer className="footer">
                 <p>{profile.username || 'Racun'} &copy; {new Date().getFullYear()}</p>

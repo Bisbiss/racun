@@ -121,7 +121,7 @@ export default function UserDashboard() {
                     <p>Pantau perkembangan tautan tokomu dalam 7 hari terakhir.</p>
                 </div>
                 <div className="ud-greeting-icon">
-                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                         <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
                         <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
                     </svg>
@@ -184,25 +184,27 @@ export default function UserDashboard() {
                 {/* Chart Card */}
                 <div className="ud-chart-card">
                     <h3 className="ud-card-title">Statistik 7 Hari (Klik)</h3>
-                    <div style={{ width: '100%', height: 320, position: 'relative' }}>
-                        <ResponsiveContainer width="100%" height="100%">
-                            <AreaChart data={chartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-                                <defs>
-                                    <linearGradient id="colorClicks" x1="0" y1="0" x2="0" y2="1">
-                                        <stop offset="5%" stopColor="#10b981" stopOpacity={0.8} />
-                                        <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
-                                    </linearGradient>
-                                </defs>
-                                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
-                                <XAxis dataKey="display" stroke="#94a3b8" fontSize={12} tickLine={false} axisLine={false} dy={10} />
-                                <YAxis stroke="#94a3b8" fontSize={12} tickLine={false} axisLine={false} />
-                                <Tooltip
-                                    contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgba(0,0,0,0.1)', padding: '12px' }}
-                                    itemStyle={{ color: '#10b981', fontWeight: 600 }}
-                                />
-                                <Area type="monotone" dataKey="clicks" name="Sistem Klik" stroke="#10b981" strokeWidth={3} fillOpacity={1} fill="url(#colorClicks)" />
-                            </AreaChart>
-                        </ResponsiveContainer>
+                    <div style={{ width: '100%', overflowX: 'auto' }}>
+                        <div style={{ minWidth: '400px', height: 320, position: 'relative' }}>
+                            <ResponsiveContainer width="100%" height="100%">
+                                <AreaChart data={chartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                                    <defs>
+                                        <linearGradient id="colorClicks" x1="0" y1="0" x2="0" y2="1">
+                                            <stop offset="5%" stopColor="#10b981" stopOpacity={0.8} />
+                                            <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
+                                        </linearGradient>
+                                    </defs>
+                                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
+                                    <XAxis dataKey="display" stroke="#94a3b8" fontSize={12} tickLine={false} axisLine={false} dy={10} />
+                                    <YAxis stroke="#94a3b8" fontSize={12} tickLine={false} axisLine={false} />
+                                    <Tooltip
+                                        contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgba(0,0,0,0.1)', padding: '12px' }}
+                                        itemStyle={{ color: '#10b981', fontWeight: 600 }}
+                                    />
+                                    <Area type="monotone" dataKey="clicks" name="Sistem Klik" stroke="#10b981" strokeWidth={3} fillOpacity={1} fill="url(#colorClicks)" />
+                                </AreaChart>
+                            </ResponsiveContainer>
+                        </div>
                     </div>
                 </div>
 

@@ -5,6 +5,7 @@ const RESERVED_USERNAMES = ['admin', 'dashboard', 'login', 'register', 'api', 'a
 
 export default function DashboardSettings() {
     const [loading, setLoading] = useState(false);
+    const [uploadingAvatar, setUploadingAvatar] = useState(false);
     const [profile, setProfile] = useState({ username: '', full_name: '', bio: '', id: '', avatar_url: '', instagram_url: '', tiktok_url: '', whatsapp_url: '' });
     const [message, setMessage] = useState({ type: '', text: '' });
     const [refreshKey, setRefreshKey] = useState(Date.now());
@@ -38,6 +39,45 @@ export default function DashboardSettings() {
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         setProfile({ ...profile, [e.target.name]: e.target.value });
+    };
+
+    const handleAvatarUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        try {
+            if (!profile.id) {
+                setMessage({ type: 'error', text: 'Harap Simpan Username terlebih dahulu sebelum mengunggah foto.' });
+                return;
+            }
+
+            setUploadingAvatar(true);
+            setMessage({ type: '', text: '' });
+
+            if (!e.target.files || e.target.files.length === 0) return;
+
+            const file = e.target.files[0];
+            const fileExt = file.name.split('.').pop();
+            const fileName = `${Math.random()}.${fileExt}`;
+            const filePath = `${profile.id}/${fileName}`;
+
+            // Upload the file to Supabase Storage
+            const { error: uploadError } = await supabase.storage
+                .from('avatars')
+                .upload(filePath, file);
+
+            if (uploadError) throw uploadError;
+
+            // Get the public URL
+            const { data } = supabase.storage.from('avatars').getPublicUrl(filePath);
+
+            // Set the state
+            setProfile(prev => ({ ...prev, avatar_url: data.publicUrl }));
+            setMessage({ type: 'success', text: 'Foto berhasil diunggah. Jangan lupa klik "Simpan Perubahan".' });
+        } catch (error: any) {
+            setMessage({ type: 'error', text: 'Gagal mengunggah foto: ' + error.message });
+        } finally {
+            setUploadingAvatar(false);
+            // Reset input file value
+            e.target.value = '';
+        }
     };
 
     const handleSave = async (e: React.FormEvent) => {
@@ -162,15 +202,30 @@ export default function DashboardSettings() {
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginTop: '16px' }}>
                         <h4 style={{ color: 'var(--text-color)', fontSize: '1rem', margin: '0 0 8px 0' }}>Media & Sosial</h4>
 
-                        <label style={{ fontSize: '0.9rem', fontWeight: '600', color: 'var(--text-color)' }}>Link Foto Profil (Avatar URL)</label>
-                        <input
-                            type="url"
-                            name="avatar_url"
-                            value={profile.avatar_url}
-                            onChange={handleChange}
-                            placeholder="https://..."
-                            style={{ padding: '12px', borderRadius: '8px', border: '1px solid #ddd', fontSize: '0.9rem', marginBottom: '8px' }}
-                        />
+                        <label style={{ fontSize: '0.9rem', fontWeight: '600', color: 'var(--text-color)' }}>Link Foto Profil / Unggah</label>
+                        <div style={{ display: 'flex', gap: '8px', marginBottom: '8px' }}>
+                            <input
+                                type="url"
+                                name="avatar_url"
+                                value={profile.avatar_url}
+                                onChange={handleChange}
+                                placeholder="Masukan URL / Klik Unggah..."
+                                style={{ flex: 1, minWidth: 0, padding: '12px', borderRadius: '8px', border: '1px solid #ddd', fontSize: '0.9rem' }}
+                            />
+                            <label style={{
+                                background: 'white', color: 'var(--text-color)', border: '1px solid #cbd5e1', padding: '0 16px', borderRadius: '8px',
+                                cursor: uploadingAvatar ? 'wait' : 'pointer', fontWeight: 600, display: 'flex', alignItems: 'center', justifyContent: 'center', whiteSpace: 'nowrap', transition: 'background-color 0.2s'
+                            }}>
+                                {uploadingAvatar ? '...' : 'Unggah File'}
+                                <input
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={handleAvatarUpload}
+                                    disabled={uploadingAvatar}
+                                    style={{ position: 'absolute', width: '1px', height: '1px', padding: 0, margin: '-1px', overflow: 'hidden', clip: 'rect(0, 0, 0, 0)', whiteSpace: 'nowrap', borderWidth: 0 }}
+                                />
+                            </label>
+                        </div>
 
                         <label style={{ fontSize: '0.9rem', fontWeight: '600', color: 'var(--text-color)' }}>Instagram URL</label>
                         <input

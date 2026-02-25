@@ -37,6 +37,11 @@
     backdrop-filter: blur(10px);
 }
 
+.ud-greeting-icon svg {
+    width: 40px;
+    height: 40px;
+}
+
 .ud-stats-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -209,14 +214,23 @@
         top: 24px;
         right: 24px;
         opacity: 0.5;
+        padding: 12px;
+    }
+
+    .ud-greeting-icon svg {
+        width: 24px;
+        height: 24px;
     }
     
     .ud-greeting-text h2 {
         font-size: 1.5rem;
     }
     
-    .ud-chart-card {
+    .ud-chart-card, .ud-recent-card {
         padding: 16px;
+        width: 100%;
+        box-sizing: border-box;
+        overflow: hidden;
     }
     
     .ud-chart-card .recharts-responsive-container {
