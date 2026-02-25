@@ -6,7 +6,7 @@ const RESERVED_USERNAMES = ['admin', 'dashboard', 'login', 'register', 'api', 'a
 export default function DashboardSettings() {
     const [loading, setLoading] = useState(false);
     const [uploadingAvatar, setUploadingAvatar] = useState(false);
-    const [profile, setProfile] = useState({ username: '', full_name: '', bio: '', id: '', avatar_url: '', instagram_url: '', tiktok_url: '', whatsapp_url: '' });
+    const [profile, setProfile] = useState({ username: '', full_name: '', bio: '', id: '', avatar_url: '', instagram_url: '', tiktok_url: '', whatsapp_url: '', theme_color: '#10b981' });
     const [message, setMessage] = useState({ type: '', text: '' });
     const [refreshKey, setRefreshKey] = useState(Date.now());
 
@@ -31,6 +31,7 @@ export default function DashboardSettings() {
                     instagram_url: data.instagram_url || '',
                     tiktok_url: data.tiktok_url || '',
                     whatsapp_url: data.whatsapp_url || '',
+                    theme_color: data.theme_color || '#10b981',
                 });
             }
         }
@@ -125,6 +126,7 @@ export default function DashboardSettings() {
                     instagram_url: profile.instagram_url,
                     tiktok_url: profile.tiktok_url,
                     whatsapp_url: profile.whatsapp_url,
+                    theme_color: profile.theme_color,
                 });
 
             if (error) throw error;
@@ -196,6 +198,20 @@ export default function DashboardSettings() {
                             placeholder="Ceritakan sedikit tentang produk kamu..."
                             style={{ padding: '12px', borderRadius: '8px', border: '1px solid #ddd', fontSize: '1rem', fontFamily: 'inherit' }}
                         />
+                    </div>
+
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                        <label style={{ fontSize: '0.9rem', fontWeight: '600', color: 'var(--text-color)' }}>Warna Tema (Latar Belakang Profil)</label>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                            <input
+                                type="color"
+                                name="theme_color"
+                                value={profile.theme_color}
+                                onChange={handleChange}
+                                style={{ width: '48px', height: '48px', padding: '0', border: 'none', borderRadius: '8px', cursor: 'pointer', background: 'transparent' }}
+                            />
+                            <span style={{ fontSize: '0.9rem', fontFamily: 'monospace', background: '#f1f5f9', padding: '6px 12px', borderRadius: '6px', border: '1px solid #e2e8f0', color: 'var(--text-color)' }}>{profile.theme_color}</span>
+                        </div>
                     </div>
 
                     {/* Additional Settings */}
