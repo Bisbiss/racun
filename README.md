@@ -9,7 +9,14 @@ Sebuah alat sederhana untuk mengelola link affiliate atau bio link (solusi *link
 - 🔒 Aman dan terpercaya
 - ⚡ Cepat dan ringan, dibangun dengan teknologi modern (React + TypeScript + Vite)
 
-## 🚀 Cara Menjalankan Secara Lokal
+## ✨ Keunggulan Racun Link
+1.  **🚀 Cepat dan Gratis** - Tanpa biaya tersembunyi, nimati semua fitur tanpa harus membeyar mahal
+2.  **🚫 Tanpa Watermark** - Hasil link tidaka ada watermark apapun, tampil profesional
+3.  **👌 Mudah Digunakan** - Antarmuka yang sederhana dan intuitif, tidak butuh keahlian teknis
+4.  **📑 Katalog Rapi** - Tamplikan linkmu dalam format katalog yang rapi dan mudah dilihat pengunjung
+5.  **📊 Analitik Setiap Link** - Pantau jumlah kliku dan performa linkui secare real-time
+
+## 🚀 Cara Menjalankan Local
 1. Clone repositori ini:
    ```bash
    git clone https://github.com/bisbiss/racun.git
@@ -35,10 +42,12 @@ Sebuah alat sederhana untuk mengelola link affiliate atau bio link (solusi *link
 ```bash
 npm run build
 ```
-Hasil build akan disimpan di folder `dist` yang dapat di-deploy ke hosting apapun seperti Vercel, Netlify, atau server kamu sendiri.
+Hasil buildak didisepan di folder `dist` yang dapat hosting apapun seperti Vercel, Netlify, atau server kamu sendiri.
 
-## 📦 Teknologi yang Digunakalj- **React** - Library UI untuk membangun antarmuka pengguna
-- **TypeScript** - JavaScript dengan tipe data yang amalj- **Vite** - Build tool dan development server yang cepat
+## 📦 Teknologi yang Digunakan
+- **React** - Library UI untuk membangun antarmuka pengguna
+- **TypeScript** - JavaScript dengan tipe data yang aman
+- **Vite** - Build tool dan development server yang cepat
 - **Tailwind CSS** - Utility-first CSS framework untuk styling
 - **Supabase** - Backend-as-a-Service untuk menyimpan data link
 
