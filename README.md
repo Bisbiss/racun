@@ -9,6 +9,13 @@ Sebuah alat sederhana untuk mengelola link affiliate atau bio link (solusi *link
 - 🔒 Aman dan terpercaya
 - ⚡ Cepat dan ringan, dibangun dengan teknologi modern (React + TypeScript + Vite)
 
+## ✨ Keunggulan Racun Link
+1.  🚀 **Cepat dan Gratis** - Tanpa biaya tersembunyi, nimati semua fitur tanpa harus membeyar mahal
+2.  📚� **Tanpa Watermark** - Hasil link tidak ada watermark apapun, tampil profesional
+3.  👌 **Mudah Digunakan** - Antarmuka yang sederhana dan intuitif, tidak butuh keahlian teknis
+4.  📑 **Katalog Rapi** - Tamplikan linkmu dalam format katalog yang rapi dan mudah dilihat pengunjung
+5.  📊 **Analitik Setiap Link** - Pantau jumlah klik dan performa linkmu secara real-time
+
 ## 🚀 Cara Menjalankan Secara Lokal
 1. Clone repositori ini:
    ```bash
@@ -27,7 +34,7 @@ Sebuah alat sederhana untuk mengelola link affiliate atau bio link (solusi *link
 
 ## 📝 Cara Menggunakan
 1. Buka halaman admin atau file konfigurasi proyek
-2. Tambahkan link yang ingin kamu kelola beserta deskrissi dan gambar thumbnail
+2. Tambahkan link yang ingin kamu kelola beserta deskripsi dan gambar thumbnail
 3. Simpan perubahan yang telah dibuat
 4. Salin dan bagikan link hasilnya ke bio sosial media kamu
 
@@ -35,10 +42,12 @@ Sebuah alat sederhana untuk mengelola link affiliate atau bio link (solusi *link
 ```bash
 npm run build
 ```
-Hasil build akan disimpan di folder `dist` yang dapat di-deploy ke hosting apapun seperti Vercel, Netlify, atau server kamu sendiri.
+Hasil buildak disimpan di folder `dist` yang dapat di-deploy ke hosting apapun seperti Vercel, Netlify, atau server kamu sendiri.
 
-## 📦 Teknologi yang Digunakalj- **React** - Library UI untuk membangun antarmuka pengguna
-- **TypeScript** - JavaScript dengan tipe data yang amalj- **Vite** - Build tool dan development server yang cepat
+## 📦 Teknologi yang Digunakan
+- **React** - Library UI untuk membangun antarmuka pengguna
+- **TypeScript** - JavaScript dengan tipe data yang aman
+- **Vite** - Build tool dan development server yang cepat
 - **Tailwind CSS** - Utility-first CSS framework untuk styling
 - **Supabase** - Backend-as-a-Service untuk menyimpan data link
 
