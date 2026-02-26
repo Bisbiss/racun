@@ -110,49 +110,6 @@ export default function LandingPage() {
                     </div>
                 </section>
 
-                {/* FAQ Section */}
-                <section className="py-16 bg-gray-50 rounded-2xl">
-                    <div className="max-w-4xl mx-auto">
-                        <div className="text-center mb-12">
-                            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">Pertanyaan yang Sering Diajukan</h2>
-                            <p className="text-gray-600 max-w-2xl mx-auto">
-                                Jawaban untuk pertanyaan yang sering ditanyakan tentang Racun Link
-                            </p>
-                        </div>
-                        
-                        <div className="space-y-0">
-                            {[
-                                {
-                                  question: "Apa itu Racun Link?",
-                                  answer: "Racun Link adalah alat untuk membuat halaman link bio yang estetik dan mudah digunakan untuk mengelola link affiliate kamu, termasuk TikTok, Shopee, Tokopedia, dan banyak lagi."
-                                },
-                                {
-                                  question: "Apakah saya perlu membayar untuk menggunakan Racun Link?",
-                                  answer: "Tidak, Racun Link dapat digunakan secara gratis dengan semua fitur dasar tanpa biaya tersembunyi."
-                                },
-                                {
-                                  question: "Apakah ada watermark di link yang saya buat?",
-                                  answer: "Tidak, semua link yang kamu buat tidak ada watermark apapun dan tampil profesional."
-                                },
-                                {
-                                  question: "Bagaimana cara menambahkan link ke halaman saya?",
-                                  answer: "Setelah login, kamu bisa menambahkan link melalui halaman dashboard dan mengisi form yang tersedia dengan detail link dan deskripsi yang diinginkan."
-                                },
-                                {
-                                  question: "Dapatkah saya melihat statistik klik link saya?",
-                                  answer: "Tentu, Racun Link menyediakan analitik klik link secara real-time untuk membantu kamu melacak performa link affiliate kamu."
-                                }
-                              ].map((item, index) => (
-                                <FAQItem 
-                                  key={index}
-                                  question={item.question}
-                                  answer={item.answer}
-                                />
-                              ))}
-                        </div>
-                    </div>
-                </section>
-
                 {/* CTA Section */}
                 <section className="py-16 text-center">
                     <div className="max-w-3xl mx-auto space-y-6">
@@ -170,28 +127,4 @@ export default function LandingPage() {
             </footer>
         </div>
     )
-}
-
-const FAQItem = ({ question, answer }: { question: string; answer: string }) => {
-  const [isOpen, setIsOpen] = useState(false);
-
-  return (
-    <div className="border-b border-gray-200 py-6">
-      <button 
-        className="flex justify-between items-center w-full text-left font-semibold text-lg hover:text-emerald-600 transition-colors"
-        onClick={() => setIsOpen(!isOpen)}
-        aria-expanded={isOpen}
-      >
-        <span>{question}</span>
-        <svg xmlns="http://www.w3.org/2000/svg" className={`w-5 h-5 transition-transform ${isOpen ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-        </svg>
-      </button>
-      <div className={`mt-4 overflow-hidden transition-all duration-300 ${isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}>
-        <p className="text-gray-600 pl-4 border-l-2 border-emerald-500/30 py-2">
-          {answer}
-        </p>
-      </div>
-    </div>
-  )
 }
