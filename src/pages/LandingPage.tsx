@@ -68,19 +68,29 @@ export default function LandingPage() {
 
                 <section className="lp-features">
                     <div className="lp-feature-card">
-                        <div className="lp-feature-icon">🎨</div>
-                        <h3>Desain Estetik & Cantik</h3>
-                        <p>Tampilan modern dengan efek glassmorphism yang bikin followers betah klik produk yang kamu rekomendasikan.</p>
+                        <div className="lp-feature-icon">🚀</div>
+                        <h3>Cepat dan Gratis</h3>
+                        <p>Tanpa biaya tersembunyi, nikmati semua fitur tanpa harus membayar mahal.</p>
                     </div>
                     <div className="lp-feature-card">
-                        <div className="lp-feature-icon">⚡️</div>
-                        <h3>Sangat Cepat & Responsif</h3>
-                        <p>Loading instan tanpa lemot, memastikan pengunjung tidak kabur sebelum klik beli di HP mereka.</p>
+                        <div className="lp-feature-icon">🚫</div>
+                        <h3>Tanpa Watermark</h3>
+                        <p>Hasil link tidak ada watermark apapun, tampil profesional dan rapi.</p>
                     </div>
                     <div className="lp-feature-card">
-                        <div className="lp-feature-icon">🛍️</div>
-                        <h3>Katalog Lebih Rapi</h3>
-                        <p>Atur, tambah, dan kumpulkan ribuan link affiliate kamu dalam satu tempat praktis dan bebas ribet.</p>
+                        <div className="lp-feature-icon">👌</div>
+                        <h3>Mudah Digunakan</h3>
+                        <p>Antarmuka yang sederhana dan intuitif, tidak butuh keahlian teknis apapun.</p>
+                    </div>
+                    <div className="lp-feature-card">
+                        <div className="lp-feature-icon">📑</div>
+                        <h3>Katalog Rapi</h3>
+                        <p>Tampilkan linkmu dalam format katalog yang rapi dan mudah dilihat pengunjung.</p>
+                    </div>
+                    <div className="lp-feature-card">
+                        <div className="lp-feature-icon">📊</div>
+                        <h3>Analitik Setiap Link</h3>
+                        <p>Pantau jumlah klik dan performa linkmu secara real-time.</p>
                     </div>
                 </section>
 
