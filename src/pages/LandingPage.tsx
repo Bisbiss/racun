@@ -13,27 +13,6 @@ export default function LandingPage() {
         });
     }, []);
 
-    // Komponen FAQ Item
-    const FAQItem = ({ question, answer }: { question: string; answer: string }) => {
-      const [isOpen, setIsOpen] = useState(false);
-      return (
-        <div className="lp-faq-item border-b border-border/50 py-4">
-          <button 
-            className="flex justify-between items-center w-full text-left font-semibold text-lg hover:text-primary transition-colors"
-            onClick={() => setIsOpen(!isOpen)}
-          >
-            <span>{question}</span>
-            <span className={`transition-transform ${isOpen ? 'rotate-180' : ''}`}>▼</span>
-          </button>
-          {isOpen && (
-            <p className="mt-3 text-muted-foreground pl-4 border-l-2 border-primary/30">
-              {answer}
-            </p>
-          )}
-        </div>
-      );
-    };
-
     return (
         <div className="lp-container">
             <SEO
@@ -115,36 +94,60 @@ export default function LandingPage() {
                     </div>
                 </section>
 
-                {/* Section FAQ Baru */}
-                <section className="lp-faq py-16 bg-background">
-                  <div className="max-w-4xl mx-auto px-4">
-                    <div className="text-center mb-12">
-                      <h2 className="text-3xl font-bold mb-4">Pertanyaan yang Sering Diajukan</h2>
-                      <p className="text-muted-foreground max-w-2xl mx-auto">
+                {/* Section FAQ Responsif */}
+                <section className="py-12 md:py-16 bg-background">
+                  <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="text-center mb-8 md:mb-12">
+                      <h2 className="text-2xl md:text-3xl font-bold mb-4">Pertanyaan yang Sering Diajukan</h2>
+                      <p className="text-sm md:text-base text-gray-600 max-w-2xl mx-auto">
                         Jawaban untuk pertanyaan yang sering ditanyakan tentang Racun Link
                       </p>
                     </div>
+                    
                     <div className="space-y-0">
-                      <FAQItem 
-                        question="Apa itu Racun Link?"
-                        answer="Racun Link adalah alat untuk membuat halaman link bio yang estetik dan mudah digunakan untuk mengelola link affiliate kamu, termasuk TikTok, Shopee, Tokopedia, dan banyak lagi."
-                      />
-                      <FAQItem 
-                        question="Apakah saya perlu membayar untuk menggunakan Racun Link?"
-                        answer="Tidak, Racun Link dapat digunakan secara gratis dengan semua fitur dasar tanpa biaya tersembunyi."
-                      />
-                      <FAQItem 
-                        question="Apakah ada watermark di link yang saya buat?"
-                        answer="Tidak, semua link yang kamu buat tidak ada watermark apapun dan tampil profesional."
-                      />
-                      <FAQItem 
-                        question="Bagaimana cara menambahkan link ke halaman saya?"
-                        answer="Setelah login, kamu bisa menambahkan link melalui halaman dashboard dan mengisi form yang tersedia dengan detail link dan deskripsi yang diinginkan."
-                      />
-                      <FAQItem 
-                        question="Dapatkah saya melihat statistik klik link saya?"
-                        answer="Tentu, Racun Link menyediakan analitik klik link secara real-time untuk membantu kamu melacak performa link affiliate kamu."
-                      />
+                      {[
+                        {
+                          q: "Apa itu Racun Link?",
+                          a: "Racun Link adalah alat untuk membuat halaman link bio yang estetik dan mudah digunakan untuk mengelola link affiliate kamu, termasuk TikTok, Shopee, Tokopedia, dan banyak lagi."
+                        },
+                        {
+                          q: "Apakah saya perlu membayar untuk menggunakan Racun Link?",
+                          a: "Tidak, Racun Link dapat digunakan secara gratis dengan semua fitur dasar tanpa biaya tersembunyi."
+                        },
+                        {
+                          q: "Apakah ada watermark di link yang saya buat?",
+                          a: "Tidak, semua link yang kamu buat tidak ada watermark apapun dan tampil profesional."
+                        },
+                        {
+                          q: "Bagaimana cara menambahkan link ke halaman saya?",
+                          a: "Setelah login, kamu bisa menambahkan link melalui halaman dashboard dan mengisi form yang tersedia dengan detail link dan deskripsi yang diinginkan."
+                        },
+                        {
+                          q: "Dapatkah saya melihat statistik klik link saya?",
+                          a: "Tentu, Racun Link menyediakan analitik klik link secara real-time untuk membantu kamu melacak performa link affiliate kamu."
+                        }
+                      ].map((item, i) => {
+                        const [open, setOpen] = useState(false);
+                        return (
+                          <div key={i} className="border-b border-gray-200 py-4 md:py-6">
+                            <button 
+                              onClick={() => setOpen(!open)}
+                              className="flex justify-between items-center w-full text-left font-semibold text-base md:text-lg hover:text-emerald-600 transition-all"
+                              aria-expanded={open}
+                            >
+                              <span className="pr-4">{item.q}</span>
+                              <svg xmlns="http://www.w3.org/2000/svg" className={`w-5 h-5 flex-shrink-0 transition-transform ${open ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                              </svg>
+                            </button>
+                            <div className={`mt-3 overflow-hidden transition-all duration-300 ${open ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}>
+                              <p className="text-sm md:text-base text-gray-600 pl-0 md:pl-4 border-l-2 border-emerald-500/30 py-2">
+                                {item.a}
+                              </p>
+                            </div>
+                          </div>
+                        )
+                      })}
                     </div>
                   </div>
                 </section>
