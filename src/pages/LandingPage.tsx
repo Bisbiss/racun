@@ -6,6 +6,30 @@ import './LandingPage.css';
 
 export default function LandingPage() {
     const [hasSession, setHasSession] = useState(false);
+    const [faqOpen, setFaqOpen] = useState<number | null>(null);
+
+    const faqs = [
+        {
+            q: "Apa itu Racun Link?",
+            a: "Racun Link adalah platform gratis membuat halaman link-in-bio modern untuk kreator konten dan afiliator. Kamu bisa mengumpulkan dan membagikan semua link produk favorit (Shopee, Tokopedia, TikTok, dll) dalam satu halaman yang rapi dan elegan."
+        },
+        {
+            q: "Apakah platform ini benar-benar gratis?",
+            a: "Benar! Pembuatan akun dan semua fitur inti seperti menambah ratusan tautan, mengunggah foto profil, hingga pengaturan tema warna bisa digunakan secara gratis selamanya."
+        },
+        {
+            q: "Apakah saya perlu menginstal aplikasi tambahan di HP?",
+            a: "Sama sekali tidak. Racun Link sepenuhnya berbasis Web App. Kamu bebas mengatur halaman, menambah tautan, dan memantau analitik langsung lewat Browser di HP maupun Laptop."
+        },
+        {
+            q: "Bagaimana cara membagikan link halaman saya?",
+            a: "Seusai mendaftar dan menentukan nama pengguna (username) di bagian Pengaturan Profil Dasbor, kamu akan mendapatkan satu link khusus (contoh: racun.link/namakamu). Cukup copy paste link tersebut ke bio media sosialmu (TikTok/IG/Twitter)!"
+        }
+    ];
+
+    const toggleFaq = (index: number) => {
+        setFaqOpen(faqOpen === index ? null : index);
+    };
 
     useEffect(() => {
         supabase.auth.getSession().then(({ data: { session } }) => {
@@ -91,6 +115,32 @@ export default function LandingPage() {
                         <div className="lp-feature-icon">📊</div>
                         <h3>Analitik Setiap Link</h3>
                         <p>Pantau jumlah klik dan performa linkmu secara real-time.</p>
+                    </div>
+                </section>
+
+                <section className="lp-faq" id="faq">
+                    <div className="lp-faq-header">
+                        <h2>Pertanyaan yang Sering Diajukan</h2>
+                        <p>Temukan jawaban tentang bagaimana Racun Link bekerja.</p>
+                    </div>
+                    <div className="lp-faq-list">
+                        {faqs.map((faq, index) => (
+                            <div
+                                key={index}
+                                className={`lp-faq-item ${faqOpen === index ? 'active' : ''}`}
+                                onClick={() => toggleFaq(index)}
+                            >
+                                <div className="lp-faq-question">
+                                    <h3>{faq.q}</h3>
+                                    <span className="lp-faq-icon">{faqOpen === index ? '−' : '+'}</span>
+                                </div>
+                                {faqOpen === index && (
+                                    <div className="lp-faq-answer">
+                                        <p>{faq.a}</p>
+                                    </div>
+                                )}
+                            </div>
+                        ))}
                     </div>
                 </section>
 
