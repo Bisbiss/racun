@@ -7,6 +7,9 @@ import './AdminDashboard.css';
 export default function AdminDashboard() {
     const [stats, setStats] = useState({ totalUsers: 0, totalLinks: 0, totalClicks: 0 });
     const [chartData, setChartData] = useState<any[]>([]);
+    const [allClicksData, setAllClicksData] = useState<any[]>([]);
+    const [linksList, setLinksList] = useState<any[]>([]);
+    const [selectedLink, setSelectedLink] = useState<string>('all');
 
     useEffect(() => {
         async function loadData() {
@@ -16,8 +19,14 @@ export default function AdminDashboard() {
             // Count total active links
             const { count: linksCount } = await supabase.from('links').select('id', { count: 'exact', head: true }).eq('is_active', true);
 
+            // Fetch all active links for the dropdown
+            const { data: allLinks } = await supabase.from('links').select('id, title, url').eq('is_active', true);
+            if (allLinks) {
+                setLinksList(allLinks);
+            }
+
             // Count total clicks entirely
-            const { data: allClicks, count: clicksCount } = await supabase.from('link_clicks').select('created_at', { count: 'exact' });
+            const { data: allClicks, count: clicksCount } = await supabase.from('link_clicks').select('created_at, link_id', { count: 'exact' });
 
             setStats({
                 totalUsers: usersCount || 0,
@@ -25,38 +34,49 @@ export default function AdminDashboard() {
                 totalClicks: clicksCount || 0
             });
 
-            // Prepare 7 Day chart data
-            const last7Days = Array.from({ length: 7 }).map((_, i) => {
-                const d = new Date();
-                d.setDate(d.getDate() - (6 - i));
-                return {
-                    dateStr: d.toISOString().split('T')[0],
-                    display: d.toLocaleDateString('id-ID', { weekday: 'short' }),
-                    clicks: 0
-                };
-            });
-
             if (allClicks) {
-                allClicks.forEach(click => {
-                    const dateStr = click.created_at.split('T')[0];
-                    const dayMatch = last7Days.find(d => d.dateStr === dateStr);
-                    if (dayMatch) {
-                        dayMatch.clicks += 1;
-                    }
-                });
+                setAllClicksData(allClicks);
             }
-
-            setChartData(last7Days);
         }
 
         loadData();
     }, []);
 
+    // Effect to calculate chart data based on selected link
+    useEffect(() => {
+        // Prepare 7 Day chart data
+        const last7Days = Array.from({ length: 7 }).map((_, i) => {
+            const d = new Date();
+            d.setDate(d.getDate() - (6 - i));
+            return {
+                dateStr: d.toISOString().split('T')[0],
+                display: d.toLocaleDateString('id-ID', { weekday: 'short' }),
+                clicks: 0
+            };
+        });
+
+        const filteredClicks = selectedLink === 'all'
+            ? allClicksData
+            : allClicksData.filter(c => c.link_id === selectedLink);
+
+        filteredClicks.forEach(click => {
+            const dateStr = click.created_at.split('T')[0];
+            const dayMatch = last7Days.find(d => d.dateStr === dateStr);
+            if (dayMatch) {
+                dayMatch.clicks += 1;
+            }
+        });
+
+        setChartData(last7Days);
+    }, [selectedLink, allClicksData]);
+
+
+
     return (
         <div className="ad-container">
-            <SEO 
-                title="Dashboard Admin - Racun Link" 
-                description="Kelola semua pengguna, link, dan statistik klik di platform Racun Link." 
+            <SEO
+                title="Dashboard Admin - Racun Link"
+                description="Kelola semua pengguna, link, dan statistik klik di platform Racun Link."
             />
             {/* Stats Grid */}
             <div className="ad-stats-grid">
@@ -123,7 +143,32 @@ export default function AdminDashboard() {
 
             {/* Chart Card */}
             <div className="ad-chart-card">
-                <h3 className="ad-card-title">Statistik Pengunjung Jaringan (7 Hari)</h3>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px', marginBottom: '24px' }}>
+                    <h3 className="ad-card-title" style={{ margin: 0 }}>Statistik Pengunjung Jaringan (7 Hari)</h3>
+                    <select
+                        value={selectedLink}
+                        onChange={(e) => setSelectedLink(e.target.value)}
+                        style={{
+                            padding: '10px 16px',
+                            borderRadius: '12px',
+                            border: '1px solid #e2e8f0',
+                            backgroundColor: '#f8fafc',
+                            color: 'var(--text-color)',
+                            fontSize: '0.9rem',
+                            fontWeight: 600,
+                            outline: 'none',
+                            cursor: 'pointer',
+                            minWidth: '200px'
+                        }}
+                    >
+                        <option value="all">Semua Link</option>
+                        {linksList.map(link => (
+                            <option key={link.id} value={link.id}>
+                                {link.title || link.url}
+                            </option>
+                        ))}
+                    </select>
+                </div>
 
                 <div style={{ width: '100%', overflowX: 'auto' }}>
                     <div style={{ minWidth: '400px', height: '350px' }}>

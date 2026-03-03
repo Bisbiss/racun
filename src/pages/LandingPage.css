@@ -407,3 +407,118 @@
     max-width: 80%;
   }
 }
+
+/* Testimonials / User Showcase Section */
+.lp-testimonials {
+  margin-top: 100px;
+  width: 100%;
+  max-width: 1000px;
+  animation: fadeIn 1s ease-out 0.5s both;
+}
+
+.lp-testimonials-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.lp-testimonials-header h2 {
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin-bottom: 12px;
+  color: var(--text-color);
+  letter-spacing: -0.02em;
+}
+
+.lp-testimonials-header p {
+  color: var(--text-muted);
+  font-size: 1.1rem;
+}
+
+.lp-testimonials-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.lp-testimonial-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: var(--card-bg);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--card-border);
+  padding: 16px 24px;
+  border-radius: 20px;
+  text-decoration: none;
+  color: var(--text-color);
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  position: relative;
+  overflow: hidden;
+}
+
+.lp-testimonial-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(255, 117, 140, 0.15);
+  border-color: rgba(255, 117, 140, 0.4);
+}
+
+.lp-testimonial-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  overflow: hidden;
+  border: 2px solid var(--primary);
+}
+
+.lp-testimonial-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.lp-avatar-placeholder {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.lp-testimonial-info {
+  flex: 1;
+}
+
+.lp-testimonial-info h4 {
+  margin: 0 0 4px 0;
+  font-size: 1rem;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.lp-testimonial-username {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--primary);
+  opacity: 0.9;
+}
+
+.lp-testimonial-arrow {
+  color: var(--text-muted);
+  transition: all 0.3s ease;
+  opacity: 0.5;
+}
+
+.lp-testimonial-card:hover .lp-testimonial-arrow {
+  opacity: 1;
+  color: var(--primary);
+  transform: translateX(4px);
+}

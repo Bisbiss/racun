@@ -7,6 +7,7 @@ import './LandingPage.css';
 export default function LandingPage() {
     const [hasSession, setHasSession] = useState(false);
     const [faqOpen, setFaqOpen] = useState<number | null>(null);
+    const [recentProfiles, setRecentProfiles] = useState<any[]>([]);
 
     const faqs = [
         {
@@ -35,6 +36,24 @@ export default function LandingPage() {
         supabase.auth.getSession().then(({ data: { session } }) => {
             setHasSession(!!session);
         });
+
+        async function fetchProfiles() {
+            try {
+                const { data } = await supabase
+                    .from('profiles')
+                    .select('username, full_name, avatar_url, bio')
+                    .not('username', 'is', null)
+                    .neq('avatar_url', null)
+                    .limit(6);
+
+                if (data) {
+                    setRecentProfiles(data);
+                }
+            } catch (err) {
+                console.error("Failed to load profiles", err);
+            }
+        }
+        fetchProfiles();
     }, []);
 
     return (
@@ -92,6 +111,11 @@ export default function LandingPage() {
 
                 <section className="lp-features">
                     <div className="lp-feature-card">
+                        <div className="lp-feature-icon">🎨</div>
+                        <h3>Kustom Tampilan</h3>
+                        <p>Kreasikan halaman link bio kamu dengan berbagai warna tema dan gaya sesukamu.</p>
+                    </div>
+                    <div className="lp-feature-card">
                         <div className="lp-feature-icon">🚀</div>
                         <h3>Cepat dan Gratis</h3>
                         <p>Tanpa biaya tersembunyi, nikmati semua fitur tanpa harus membayar mahal.</p>
@@ -117,6 +141,40 @@ export default function LandingPage() {
                         <p>Pantau jumlah klik dan performa linkmu secara real-time.</p>
                     </div>
                 </section>
+
+                {recentProfiles.length > 0 && (
+                    <section className="lp-testimonials">
+                        <div className="lp-testimonials-header">
+                            <h2>Bergabung Bersama Kreator Lainnya</h2>
+                            <p>Mereka sudah membuat link bio estetik menggunakan Racun Link.</p>
+                        </div>
+                        <div className="lp-testimonials-grid">
+                            {recentProfiles.map((user, idx) => (
+                                <Link to={`/${user.username}`} key={idx} className="lp-testimonial-card">
+                                    <div className="lp-testimonial-avatar">
+                                        {user.avatar_url ? (
+                                            <img src={user.avatar_url} alt={user.username} />
+                                        ) : (
+                                            <div className="lp-avatar-placeholder">
+                                                {user.full_name?.charAt(0) || user.username?.charAt(0) || '?'}
+                                            </div>
+                                        )}
+                                    </div>
+                                    <div className="lp-testimonial-info">
+                                        <h4>{user.full_name || user.username}</h4>
+                                        <p className="lp-testimonial-username">racun.link/{user.username}</p>
+                                    </div>
+                                    <div className="lp-testimonial-arrow">
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                                            <polyline points="12 5 19 12 12 19"></polyline>
+                                        </svg>
+                                    </div>
+                                </Link>
+                            ))}
+                        </div>
+                    </section>
+                )}
 
                 <section className="lp-faq" id="faq">
                     <div className="lp-faq-header">
