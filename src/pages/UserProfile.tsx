@@ -115,6 +115,8 @@ export default function UserProfile() {
                                 url={link.url}
                                 icon={link.icon || 'link'}
                                 index={index}
+                                displayType={link.display_type || 'list'}
+                                thumbnailUrl={link.thumbnail_url}
                             />
                         </div>
                     ))}

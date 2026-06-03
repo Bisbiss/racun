@@ -37,6 +37,8 @@ create table public.links (
   title text not null,
   url text not null,
   icon text,
+  display_type text default 'list' not null check (display_type in ('list', 'card')),
+  thumbnail_url text,
   order_index integer default 0 not null,
   is_active boolean default true not null,
   created_at timestamp with time zone default timezone('utc'::text, now()) not null
@@ -57,6 +59,26 @@ create policy "Users can update own links." on public.links
 
 create policy "Users can delete own links." on public.links
   for delete using (auth.uid() = user_id);
+
+-- Existing projects can run these migrations if the links table already exists.
+alter table public.links
+  add column if not exists display_type text default 'list' not null;
+
+alter table public.links
+  add column if not exists thumbnail_url text;
+
+do $$
+begin
+  if not exists (
+    select 1
+    from pg_constraint
+    where conname = 'links_display_type_check'
+      and conrelid = 'public.links'::regclass
+  ) then
+    alter table public.links
+      add constraint links_display_type_check check (display_type in ('list', 'card'));
+  end if;
+end $$;
 
 -- 3. Link Clicks (Analytics) Table
 -- Records every time a visitor clicks an affiliate link.
