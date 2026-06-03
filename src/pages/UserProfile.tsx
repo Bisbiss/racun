@@ -7,10 +7,34 @@ import { useParams } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import '../App.css'
 
+type LinkDisplayType = 'list' | 'card';
+
+interface Profile {
+    id: string;
+    username: string;
+    full_name: string | null;
+    bio: string | null;
+    avatar_url: string | null;
+    instagram_url: string | null;
+    tiktok_url: string | null;
+    whatsapp_url: string | null;
+    theme_color: string | null;
+    link_display_type: LinkDisplayType | null;
+    card_columns: number | null;
+}
+
+interface ProfileLink {
+    id: string;
+    title: string;
+    url: string;
+    icon: string | null;
+    thumbnail_url: string | null;
+}
+
 export default function UserProfile() {
     const { username } = useParams();
-    const [profile, setProfile] = useState<any>(null);
-    const [links, setLinks] = useState<any[]>([]);
+    const [profile, setProfile] = useState<Profile | null>(null);
+    const [links, setLinks] = useState<ProfileLink[]>([]);
     const [loading, setLoading] = useState(true);
     const [isOwner, setIsOwner] = useState(false);
 
@@ -61,6 +85,9 @@ export default function UserProfile() {
         await supabase.from('link_clicks').insert([{ link_id: linkId }]);
     };
 
+    const profileLinkDisplayType = profile?.link_display_type === 'card' ? 'card' : 'list';
+    const profileCardColumns = profile?.card_columns === 2 ? 2 : 1;
+
     if (loading) {
         return (
             <div style={{ display: 'flex', minHeight: '100vh', alignItems: 'center', justifyContent: 'center' }}>
@@ -88,34 +115,34 @@ export default function UserProfile() {
     }
 
     return (
-        <div className="layout-container" style={{ background: profile.theme_color ? `linear-gradient(to bottom, #fff, ${profile.theme_color}33)` : 'var(--bg-color)' }}>
+        <div className="layout-container" style={{ backgroundColor: profile.theme_color || 'var(--bg-color)' }}>
             <SEO
                 title={`${profile.full_name || username} - Racun Link`}
                 description={profile.bio || `Koleksi link rekomendasi dari ${profile.full_name || username}. Temukan barang-barang menarik dan racun belanja online di sini.`}
                 image={profile.avatar_url || "/og-image.png"}
             />
-            <main className="main-content">
+            <main className={`main-content ${profileLinkDisplayType === 'card' && profileCardColumns === 2 ? 'main-content--wide' : ''}`}>
                 <ProfileHeader
                     name={profile.full_name || profile.username}
-                    bio={profile.bio}
-                    avatarUrl={profile.avatar_url}
+                    bio={profile.bio || ''}
+                    avatarUrl={profile.avatar_url ?? undefined}
                 />
                 <SocialLinks
-                    instagram={profile.instagram_url}
-                    tiktok={profile.tiktok_url}
-                    whatsapp={profile.whatsapp_url}
+                    instagram={profile.instagram_url ?? undefined}
+                    tiktok={profile.tiktok_url ?? undefined}
+                    whatsapp={profile.whatsapp_url ?? undefined}
                 />
 
-                <div className="links-container">
+                <div className={`links-container links-container--${profileLinkDisplayType} links-container--columns-${profileCardColumns}`}>
                     {links.map((link, index) => (
-                        <div key={link.id} onClick={() => handleLinkClick(link.id)}>
+                        <div key={link.id} className="link-card-shell" onClick={() => handleLinkClick(link.id)}>
                             <LinkCard
                                 id={link.id}
                                 title={link.title}
                                 url={link.url}
                                 icon={link.icon || 'link'}
                                 index={index}
-                                displayType={link.display_type || 'list'}
+                                displayType={profileLinkDisplayType}
                                 thumbnailUrl={link.thumbnail_url}
                             />
                         </div>

@@ -13,6 +13,8 @@ create table public.profiles (
   tiktok_url text,
   whatsapp_url text,
   theme_color text default '#10b981', -- Using our emerald green default
+  link_display_type text default 'list' not null check (link_display_type in ('list', 'card')),
+  card_columns integer default 1 not null check (card_columns in (1, 2)),
   created_at timestamp with time zone default timezone('utc'::text, now()) not null
 );
 
@@ -28,6 +30,39 @@ create policy "Users can insert their own profile." on public.profiles
 
 create policy "Users can update own profile." on public.profiles
   for update using (auth.uid() = id);
+
+-- Existing projects can run these migrations if the profiles table already exists.
+alter table public.profiles
+  add column if not exists link_display_type text default 'list' not null;
+
+alter table public.profiles
+  add column if not exists card_columns integer default 1 not null;
+
+do $$
+begin
+  if not exists (
+    select 1
+    from pg_constraint
+    where conname = 'profiles_link_display_type_check'
+      and conrelid = 'public.profiles'::regclass
+  ) then
+    alter table public.profiles
+      add constraint profiles_link_display_type_check check (link_display_type in ('list', 'card'));
+  end if;
+end $$;
+
+do $$
+begin
+  if not exists (
+    select 1
+    from pg_constraint
+    where conname = 'profiles_card_columns_check'
+      and conrelid = 'public.profiles'::regclass
+  ) then
+    alter table public.profiles
+      add constraint profiles_card_columns_check check (card_columns in (1, 2));
+  end if;
+end $$;
 
 -- 2. Links Table
 -- Stores the affiliate links created by the user.

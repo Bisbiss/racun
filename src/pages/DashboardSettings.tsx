@@ -1,12 +1,46 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '../lib/supabase';
+import './DashboardLinks.css';
 
 const RESERVED_USERNAMES = ['admin', 'dashboard', 'login', 'register', 'api', 'auth', 'settings', 'null', 'undefined', 'racun', 'racunlink'];
+
+type LinkDisplayType = 'list' | 'card';
+type CardColumns = 1 | 2;
+
+interface ProfileSettings {
+    username: string;
+    full_name: string;
+    bio: string;
+    id: string;
+    avatar_url: string;
+    instagram_url: string;
+    tiktok_url: string;
+    whatsapp_url: string;
+    theme_color: string;
+    link_display_type: LinkDisplayType;
+    card_columns: CardColumns;
+}
+
+function getErrorMessage(error: unknown) {
+    return error instanceof Error ? error.message : 'Terjadi kesalahan.';
+}
 
 export default function DashboardSettings() {
     const [loading, setLoading] = useState(false);
     const [uploadingAvatar, setUploadingAvatar] = useState(false);
-    const [profile, setProfile] = useState({ username: '', full_name: '', bio: '', id: '', avatar_url: '', instagram_url: '', tiktok_url: '', whatsapp_url: '', theme_color: '#10b981' });
+    const [profile, setProfile] = useState<ProfileSettings>({
+        username: '',
+        full_name: '',
+        bio: '',
+        id: '',
+        avatar_url: '',
+        instagram_url: '',
+        tiktok_url: '',
+        whatsapp_url: '',
+        theme_color: '#10b981',
+        link_display_type: 'list',
+        card_columns: 1,
+    });
     const [message, setMessage] = useState({ type: '', text: '' });
     const [refreshKey, setRefreshKey] = useState(Date.now());
 
@@ -32,6 +66,8 @@ export default function DashboardSettings() {
                     tiktok_url: data.tiktok_url || '',
                     whatsapp_url: data.whatsapp_url || '',
                     theme_color: data.theme_color || '#10b981',
+                    link_display_type: data.link_display_type === 'card' ? 'card' : 'list',
+                    card_columns: data.card_columns === 2 ? 2 : 1,
                 });
             }
         }
@@ -72,8 +108,8 @@ export default function DashboardSettings() {
             // Set the state
             setProfile(prev => ({ ...prev, avatar_url: data.publicUrl }));
             setMessage({ type: 'success', text: 'Foto berhasil diunggah. Jangan lupa klik "Simpan Perubahan".' });
-        } catch (error: any) {
-            setMessage({ type: 'error', text: 'Gagal mengunggah foto: ' + error.message });
+        } catch (error) {
+            setMessage({ type: 'error', text: 'Gagal mengunggah foto: ' + getErrorMessage(error) });
         } finally {
             setUploadingAvatar(false);
             // Reset input file value
@@ -127,6 +163,8 @@ export default function DashboardSettings() {
                     tiktok_url: profile.tiktok_url,
                     whatsapp_url: profile.whatsapp_url,
                     theme_color: profile.theme_color,
+                    link_display_type: profile.link_display_type,
+                    card_columns: profile.card_columns,
                 });
 
             if (error) throw error;
@@ -135,9 +173,8 @@ export default function DashboardSettings() {
             setProfile(prev => ({ ...prev, id: userId }));
             setMessage({ type: 'success', text: 'Profil berhasil diperbarui!' });
             setRefreshKey(Date.now());
-        } catch (error: any) {
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            setMessage({ type: 'error', text: error.message });
+        } catch (error) {
+            setMessage({ type: 'error', text: getErrorMessage(error) });
         } finally {
             setLoading(false);
         }
@@ -212,6 +249,51 @@ export default function DashboardSettings() {
                             />
                             <span style={{ fontSize: '0.9rem', fontFamily: 'monospace', background: '#f1f5f9', padding: '6px 12px', borderRadius: '6px', border: '1px solid #e2e8f0', color: 'var(--text-color)' }}>{profile.theme_color}</span>
                         </div>
+                    </div>
+
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                        <h4 style={{ color: 'var(--text-color)', fontSize: '1rem', margin: '4px 0 0 0' }}>Tampilan Link Publik</h4>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                            <span style={{ fontSize: '0.9rem', fontWeight: '600', color: 'var(--text-color)' }}>Mode Tampilan</span>
+                            <div className="dl-segmented" role="group" aria-label="Pilih tampilan semua link">
+                                <button
+                                    type="button"
+                                    className={`dl-segment ${profile.link_display_type === 'list' ? 'active' : ''}`}
+                                    onClick={() => setProfile(prev => ({ ...prev, link_display_type: 'list' }))}
+                                >
+                                    List
+                                </button>
+                                <button
+                                    type="button"
+                                    className={`dl-segment ${profile.link_display_type === 'card' ? 'active' : ''}`}
+                                    onClick={() => setProfile(prev => ({ ...prev, link_display_type: 'card' }))}
+                                >
+                                    Card
+                                </button>
+                            </div>
+                        </div>
+
+                        {profile.link_display_type === 'card' && (
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                                <span style={{ fontSize: '0.9rem', fontWeight: '600', color: 'var(--text-color)' }}>Jumlah Kolom Card</span>
+                                <div className="dl-segmented" role="group" aria-label="Pilih jumlah kolom card">
+                                    <button
+                                        type="button"
+                                        className={`dl-segment ${profile.card_columns === 1 ? 'active' : ''}`}
+                                        onClick={() => setProfile(prev => ({ ...prev, card_columns: 1 }))}
+                                    >
+                                        1 Kolom
+                                    </button>
+                                    <button
+                                        type="button"
+                                        className={`dl-segment ${profile.card_columns === 2 ? 'active' : ''}`}
+                                        onClick={() => setProfile(prev => ({ ...prev, card_columns: 2 }))}
+                                    >
+                                        2 Kolom
+                                    </button>
+                                </div>
+                            </div>
+                        )}
                     </div>
 
                     {/* Additional Settings */}

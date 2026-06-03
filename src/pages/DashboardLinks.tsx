@@ -2,22 +2,15 @@ import { useEffect, useState } from 'react';
 import { supabase } from '../lib/supabase';
 import './DashboardLinks.css';
 
-type LinkDisplayType = 'list' | 'card';
-
 interface LinkType {
     id: string;
     title: string;
     url: string;
     icon: string | null;
-    display_type: LinkDisplayType | null;
     thumbnail_url: string | null;
     is_active: boolean;
     order_index: number;
     clicks?: number;
-}
-
-function getDisplayType(displayType: string | null | undefined): LinkDisplayType {
-    return displayType === 'card' ? 'card' : 'list';
 }
 
 export default function DashboardLinks() {
@@ -27,7 +20,6 @@ export default function DashboardLinks() {
 
     const [newTitle, setNewTitle] = useState('');
     const [newUrl, setNewUrl] = useState('');
-    const [newDisplayType, setNewDisplayType] = useState<LinkDisplayType>('list');
     const [newThumbnailUrl, setNewThumbnailUrl] = useState('');
     const [urlIsValid, setUrlIsValid] = useState<boolean | null>(null);
 
@@ -126,7 +118,7 @@ export default function DashboardLinks() {
         }
 
         const finalUrl = normalizeUrl(newUrl);
-        const finalThumbnailUrl = newDisplayType === 'card' ? normalizeUrl(newThumbnailUrl) || null : null;
+        const finalThumbnailUrl = normalizeUrl(newThumbnailUrl) || null;
 
         try {
             const { data: { session } } = await supabase.auth.getSession();
@@ -137,7 +129,6 @@ export default function DashboardLinks() {
                 title: newTitle,
                 url: finalUrl,
                 icon: 'link', // Default icon
-                display_type: newDisplayType,
                 thumbnail_url: finalThumbnailUrl,
                 order_index: links.length // Append at the end
             }]).select();
@@ -150,7 +141,6 @@ export default function DashboardLinks() {
                 setIsAdding(false);
                 setNewTitle('');
                 setNewUrl('');
-                setNewDisplayType('list');
                 setNewThumbnailUrl('');
                 setUrlIsValid(null);
             }
@@ -180,26 +170,6 @@ export default function DashboardLinks() {
         } catch (error) {
             console.error('Error updating status:', error);
             alert('Gagal memperbaharui status link.')
-        }
-    }
-
-    async function updateDisplayType(id: string, displayType: LinkDisplayType) {
-        setLinks(currentLinks => currentLinks.map(link => link.id === id ? {
-            ...link,
-            display_type: displayType
-        } : link));
-
-        try {
-            const { error } = await supabase
-                .from('links')
-                .update({ display_type: displayType })
-                .eq('id', id);
-
-            if (error) throw error;
-        } catch (error) {
-            console.error('Error updating display type:', error);
-            alert('Gagal memperbaharui tampilan link.');
-            fetchLinks();
         }
     }
 
@@ -305,50 +275,24 @@ export default function DashboardLinks() {
                     </div>
 
                     <div className="dl-field">
-                        <span className="dl-label">Tampilan di profil</span>
-                        <div className="dl-segmented" role="group" aria-label="Pilih tampilan link">
-                            <button
-                                type="button"
-                                className={`dl-segment ${newDisplayType === 'list' ? 'active' : ''}`}
-                                onClick={() => setNewDisplayType('list')}
-                            >
-                                List
-                            </button>
-                            <button
-                                type="button"
-                                className={`dl-segment ${newDisplayType === 'card' ? 'active' : ''}`}
-                                onClick={() => setNewDisplayType('card')}
-                            >
-                                Card
-                            </button>
-                        </div>
+                        <label className="dl-label" htmlFor="new-thumbnail-url">Image / thumbnail untuk tampilan card</label>
+                        <input
+                            id="new-thumbnail-url"
+                            type="text"
+                            placeholder="URL gambar (Misal: https://...jpg)"
+                            value={newThumbnailUrl}
+                            onChange={(e) => setNewThumbnailUrl(e.target.value)}
+                            className="dl-input"
+                        />
                     </div>
-
-                    {newDisplayType === 'card' && (
-                        <div className="dl-field">
-                            <label className="dl-label" htmlFor="new-thumbnail-url">Image / thumbnail</label>
-                            <input
-                                id="new-thumbnail-url"
-                                type="text"
-                                placeholder="URL gambar (Misal: https://...jpg)"
-                                value={newThumbnailUrl}
-                                onChange={(e) => setNewThumbnailUrl(e.target.value)}
-                                className="dl-input"
-                            />
-                        </div>
-                    )}
 
                     {urlIsValid && (
                         <div style={{ padding: '12px', background: '#f8fafc', borderRadius: '8px', border: '1px solid #e2e8f0', display: 'flex', flexDirection: 'column', gap: '8px' }}>
                             <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 600 }}>Pratinjau Tautan:</span>
-                            <div className={`dl-preview ${newDisplayType === 'card' ? 'dl-preview-card' : ''}`}>
-                                {newDisplayType === 'card' && (
+                            <div className={`dl-preview ${newThumbnailUrl ? 'dl-preview-card' : ''}`}>
+                                {newThumbnailUrl && (
                                     <div className="dl-preview-thumb">
-                                        {newThumbnailUrl ? (
-                                            <img src={normalizeUrl(newThumbnailUrl)} alt="" />
-                                        ) : (
-                                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
-                                        )}
+                                        <img src={normalizeUrl(newThumbnailUrl)} alt="" />
                                     </div>
                                 )}
                                 <div className="dl-preview-icon">
@@ -364,7 +308,7 @@ export default function DashboardLinks() {
 
                     <div className="dl-actions">
                         <button type="submit" className="dl-btn-save" style={{ opacity: urlIsValid === false ? 0.5 : 1 }} disabled={urlIsValid === false}>Simpan Link</button>
-                        <button type="button" onClick={() => { setIsAdding(false); setNewUrl(''); setNewTitle(''); setNewDisplayType('list'); setNewThumbnailUrl(''); setUrlIsValid(null); }} className="dl-btn-cancel">Batal</button>
+                        <button type="button" onClick={() => { setIsAdding(false); setNewUrl(''); setNewTitle(''); setNewThumbnailUrl(''); setUrlIsValid(null); }} className="dl-btn-cancel">Batal</button>
                     </div>
                 </form>
             )}
@@ -412,43 +356,24 @@ export default function DashboardLinks() {
                                 </h3>
                                 <a href={link.url} target="_blank" rel="noreferrer" className="dl-item-url">{link.url}</a>
                                 <div className="dl-item-customize">
-                                    <div className="dl-segmented dl-segmented-small" role="group" aria-label={`Tampilan ${link.title}`}>
-                                        <button
-                                            type="button"
-                                            className={`dl-segment ${getDisplayType(link.display_type) === 'list' ? 'active' : ''}`}
-                                            onClick={() => updateDisplayType(link.id, 'list')}
-                                        >
-                                            List
-                                        </button>
-                                        <button
-                                            type="button"
-                                            className={`dl-segment ${getDisplayType(link.display_type) === 'card' ? 'active' : ''}`}
-                                            onClick={() => updateDisplayType(link.id, 'card')}
-                                        >
-                                            Card
-                                        </button>
+                                    <div className="dl-thumbnail-control">
+                                        <input
+                                            type="text"
+                                            value={link.thumbnail_url || ''}
+                                            placeholder="URL thumbnail untuk card"
+                                            className="dl-input dl-thumbnail-input"
+                                            onChange={(e) => {
+                                                const thumbnailUrl = e.target.value;
+                                                setLinks(currentLinks => currentLinks.map(item => item.id === link.id ? { ...item, thumbnail_url: thumbnailUrl } : item));
+                                            }}
+                                            onBlur={(e) => updateThumbnailUrl(link.id, e.target.value)}
+                                        />
+                                        {link.thumbnail_url && (
+                                            <div className="dl-thumbnail-swatch" aria-hidden="true">
+                                                <img src={normalizeUrl(link.thumbnail_url)} alt="" />
+                                            </div>
+                                        )}
                                     </div>
-
-                                    {getDisplayType(link.display_type) === 'card' && (
-                                        <div className="dl-thumbnail-control">
-                                            <input
-                                                type="text"
-                                                value={link.thumbnail_url || ''}
-                                                placeholder="URL thumbnail"
-                                                className="dl-input dl-thumbnail-input"
-                                                onChange={(e) => {
-                                                    const thumbnailUrl = e.target.value;
-                                                    setLinks(currentLinks => currentLinks.map(item => item.id === link.id ? { ...item, thumbnail_url: thumbnailUrl } : item));
-                                                }}
-                                                onBlur={(e) => updateThumbnailUrl(link.id, e.target.value)}
-                                            />
-                                            {link.thumbnail_url && (
-                                                <div className="dl-thumbnail-swatch" aria-hidden="true">
-                                                    <img src={normalizeUrl(link.thumbnail_url)} alt="" />
-                                                </div>
-                                            )}
-                                        </div>
-                                    )}
                                 </div>
                             </div>
 
